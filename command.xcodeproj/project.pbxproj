@@ -1,0 +1,465 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B55686F0120887D00004E0C8 /* CommandWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B55686EF120887D00004E0C8 /* CommandWindowController.m */; };
+		B55686FD12088A1F0004E0C8 /* CommandWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B55686FB12088A1F0004E0C8 /* CommandWindow.xib */; };
+		B556871712088CA00004E0C8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B556871612088CA00004E0C8 /* AppDelegate.m */; };
+		B55687BE120894800004E0C8 /* SocketController.m in Sources */ = {isa = PBXBuildFile; fileRef = B55687BD120894800004E0C8 /* SocketController.m */; };
+		B55B0D2C121607B800BFC0CF /* command.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = B55B0D2B121607B800BFC0CF /* command.xcdatamodel */; };
+		B57D08A1120C5321004B42BA /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B57D08A0120C5321004B42BA /* CoreMIDI.framework */; };
+		B58D8C4811F8FF5200568199 /* DarthVader.icns in Resources */ = {isa = PBXBuildFile; fileRef = B58D8C4711F8FF5200568199 /* DarthVader.icns */; };
+		B59EB94911F6208800D840A6 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B59EB94611F6208800D840A6 /* AsyncSocket.m */; };
+		B5A26392121D438800EC07F8 /* SettingsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A26391121D438800EC07F8 /* SettingsModel.m */; };
+		B5C0711A12117408004FD43C /* PYMIDIEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710512117408004FD43C /* PYMIDIEndpoint.m */; };
+		B5C0711B12117408004FD43C /* PYMIDIEndpointDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710712117408004FD43C /* PYMIDIEndpointDescriptor.m */; };
+		B5C0711C12117408004FD43C /* PYMIDIEndpointSet.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710912117408004FD43C /* PYMIDIEndpointSet.m */; };
+		B5C0711D12117408004FD43C /* PYMIDIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710B12117408004FD43C /* PYMIDIManager.m */; };
+		B5C0711E12117408004FD43C /* PYMIDIRealDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710D12117408004FD43C /* PYMIDIRealDestination.m */; };
+		B5C0711F12117408004FD43C /* PYMIDIRealEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0710F12117408004FD43C /* PYMIDIRealEndpoint.m */; };
+		B5C0712012117408004FD43C /* PYMIDIRealSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0711112117408004FD43C /* PYMIDIRealSource.m */; };
+		B5C0712112117408004FD43C /* PYMIDIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0711312117408004FD43C /* PYMIDIUtils.m */; };
+		B5C0712212117408004FD43C /* PYMIDIVirtualDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0711512117408004FD43C /* PYMIDIVirtualDestination.m */; };
+		B5C0712312117408004FD43C /* PYMIDIVirtualEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0711712117408004FD43C /* PYMIDIVirtualEndpoint.m */; };
+		B5C0712412117408004FD43C /* PYMIDIVirtualSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C0711912117408004FD43C /* PYMIDIVirtualSource.m */; };
+		B5C071C912117C4F004FD43C /* MIDIController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C071C812117C4F004FD43C /* MIDIController.m */; };
+		B5E96255122673A9002A7EDB /* settings_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E96254122673A9002A7EDB /* settings_32.png */; };
+		B5E9626912267541002A7EDB /* paly_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626712267541002A7EDB /* paly_32.png */; };
+		B5E9626A12267541002A7EDB /* stop_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626812267541002A7EDB /* stop_32.png */; };
+		D9B6674E152F064800B983DE /* StartCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B6674D152F064800B983DE /* StartCommand.m */; };
+		D9B66751152F071400B983DE /* command.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D9B66750152F071400B983DE /* command.sdef */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		256AC3F00F4B6AF500CF3369 /* command_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = command_Prefix.pch; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107310486CEB800E47090 /* command-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "command-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* command.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = command.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B54B6E2B12159C7D00874457 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		B55686EE120887D00004E0C8 /* CommandWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandWindowController.h; sourceTree = "<group>"; };
+		B55686EF120887D00004E0C8 /* CommandWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandWindowController.m; sourceTree = "<group>"; };
+		B55686FC12088A1F0004E0C8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/CommandWindow.xib; sourceTree = "<group>"; };
+		B556871512088CA00004E0C8 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B556871612088CA00004E0C8 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B55687BC120894800004E0C8 /* SocketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketController.h; sourceTree = "<group>"; };
+		B55687BD120894800004E0C8 /* SocketController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketController.m; sourceTree = "<group>"; };
+		B55B0D2B121607B800BFC0CF /* command.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = command.xcdatamodel; sourceTree = "<group>"; };
+		B57D08A0120C5321004B42BA /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		B58D8C4711F8FF5200568199 /* DarthVader.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DarthVader.icns; sourceTree = "<group>"; };
+		B59EB94511F6208800D840A6 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		B59EB94611F6208800D840A6 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		B5A26390121D438800EC07F8 /* SettingsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsModel.h; sourceTree = "<group>"; };
+		B5A26391121D438800EC07F8 /* SettingsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsModel.m; sourceTree = "<group>"; };
+		B5C0710312117408004FD43C /* PYMIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDI.h; sourceTree = "<group>"; };
+		B5C0710412117408004FD43C /* PYMIDIEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIEndpoint.h; sourceTree = "<group>"; };
+		B5C0710512117408004FD43C /* PYMIDIEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIEndpoint.m; sourceTree = "<group>"; };
+		B5C0710612117408004FD43C /* PYMIDIEndpointDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIEndpointDescriptor.h; sourceTree = "<group>"; };
+		B5C0710712117408004FD43C /* PYMIDIEndpointDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIEndpointDescriptor.m; sourceTree = "<group>"; };
+		B5C0710812117408004FD43C /* PYMIDIEndpointSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIEndpointSet.h; sourceTree = "<group>"; };
+		B5C0710912117408004FD43C /* PYMIDIEndpointSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIEndpointSet.m; sourceTree = "<group>"; };
+		B5C0710A12117408004FD43C /* PYMIDIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIManager.h; sourceTree = "<group>"; };
+		B5C0710B12117408004FD43C /* PYMIDIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIManager.m; sourceTree = "<group>"; };
+		B5C0710C12117408004FD43C /* PYMIDIRealDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIRealDestination.h; sourceTree = "<group>"; };
+		B5C0710D12117408004FD43C /* PYMIDIRealDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIRealDestination.m; sourceTree = "<group>"; };
+		B5C0710E12117408004FD43C /* PYMIDIRealEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIRealEndpoint.h; sourceTree = "<group>"; };
+		B5C0710F12117408004FD43C /* PYMIDIRealEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIRealEndpoint.m; sourceTree = "<group>"; };
+		B5C0711012117408004FD43C /* PYMIDIRealSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIRealSource.h; sourceTree = "<group>"; };
+		B5C0711112117408004FD43C /* PYMIDIRealSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIRealSource.m; sourceTree = "<group>"; };
+		B5C0711212117408004FD43C /* PYMIDIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIUtils.h; sourceTree = "<group>"; };
+		B5C0711312117408004FD43C /* PYMIDIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIUtils.m; sourceTree = "<group>"; };
+		B5C0711412117408004FD43C /* PYMIDIVirtualDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIVirtualDestination.h; sourceTree = "<group>"; };
+		B5C0711512117408004FD43C /* PYMIDIVirtualDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIVirtualDestination.m; sourceTree = "<group>"; };
+		B5C0711612117408004FD43C /* PYMIDIVirtualEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIVirtualEndpoint.h; sourceTree = "<group>"; };
+		B5C0711712117408004FD43C /* PYMIDIVirtualEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIVirtualEndpoint.m; sourceTree = "<group>"; };
+		B5C0711812117408004FD43C /* PYMIDIVirtualSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMIDIVirtualSource.h; sourceTree = "<group>"; };
+		B5C0711912117408004FD43C /* PYMIDIVirtualSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMIDIVirtualSource.m; sourceTree = "<group>"; };
+		B5C071C712117C4F004FD43C /* MIDIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIController.h; sourceTree = "<group>"; };
+		B5C071C812117C4F004FD43C /* MIDIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDIController.m; sourceTree = "<group>"; };
+		B5E96254122673A9002A7EDB /* settings_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_32.png; sourceTree = "<group>"; };
+		B5E9626712267541002A7EDB /* paly_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paly_32.png; sourceTree = "<group>"; };
+		B5E9626812267541002A7EDB /* stop_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop_32.png; sourceTree = "<group>"; };
+		B5EDC136122BBB6E00C784AC /* CommandWindowControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandWindowControllerDelegate.h; sourceTree = "<group>"; };
+		D9B6674C152F064800B983DE /* StartCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartCommand.h; sourceTree = "<group>"; };
+		D9B6674D152F064800B983DE /* StartCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartCommand.m; sourceTree = "<group>"; };
+		D9B66750152F071400B983DE /* command.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = command.sdef; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				B57D08A1120C5321004B42BA /* CoreMIDI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B59EB94511F6208800D840A6 /* AsyncSocket.h */,
+				B59EB94611F6208800D840A6 /* AsyncSocket.m */,
+				B55686EE120887D00004E0C8 /* CommandWindowController.h */,
+				B55686EF120887D00004E0C8 /* CommandWindowController.m */,
+				B556871512088CA00004E0C8 /* AppDelegate.h */,
+				B556871612088CA00004E0C8 /* AppDelegate.m */,
+				B55687BC120894800004E0C8 /* SocketController.h */,
+				B55687BD120894800004E0C8 /* SocketController.m */,
+				B5C071C712117C4F004FD43C /* MIDIController.h */,
+				B5C071C812117C4F004FD43C /* MIDIController.m */,
+				B5A26390121D438800EC07F8 /* SettingsModel.h */,
+				B5A26391121D438800EC07F8 /* SettingsModel.m */,
+				D9B6674C152F064800B983DE /* StartCommand.h */,
+				D9B6674D152F064800B983DE /* StartCommand.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B57D08A0120C5321004B42BA /* CoreMIDI.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* command.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* command */ = {
+			isa = PBXGroup;
+			children = (
+				B5EDC135122BBB4300C784AC /* Protocols */,
+				B5C0710212117408004FD43C /* PYMIDI */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = command;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3F00F4B6AF500CF3369 /* command_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				B54B6E2B12159C7D00874457 /* common.h */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D9B66750152F071400B983DE /* command.sdef */,
+				B5E9626712267541002A7EDB /* paly_32.png */,
+				B5E9626812267541002A7EDB /* stop_32.png */,
+				B5E96254122673A9002A7EDB /* settings_32.png */,
+				B55B0D2B121607B800BFC0CF /* command.xcdatamodel */,
+				B55686FB12088A1F0004E0C8 /* CommandWindow.xib */,
+				B58D8C4711F8FF5200568199 /* DarthVader.icns */,
+				8D1107310486CEB800E47090 /* command-Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B5C0710212117408004FD43C /* PYMIDI */ = {
+			isa = PBXGroup;
+			children = (
+				B5C0710312117408004FD43C /* PYMIDI.h */,
+				B5C0710412117408004FD43C /* PYMIDIEndpoint.h */,
+				B5C0710512117408004FD43C /* PYMIDIEndpoint.m */,
+				B5C0710612117408004FD43C /* PYMIDIEndpointDescriptor.h */,
+				B5C0710712117408004FD43C /* PYMIDIEndpointDescriptor.m */,
+				B5C0710812117408004FD43C /* PYMIDIEndpointSet.h */,
+				B5C0710912117408004FD43C /* PYMIDIEndpointSet.m */,
+				B5C0710A12117408004FD43C /* PYMIDIManager.h */,
+				B5C0710B12117408004FD43C /* PYMIDIManager.m */,
+				B5C0710C12117408004FD43C /* PYMIDIRealDestination.h */,
+				B5C0710D12117408004FD43C /* PYMIDIRealDestination.m */,
+				B5C0710E12117408004FD43C /* PYMIDIRealEndpoint.h */,
+				B5C0710F12117408004FD43C /* PYMIDIRealEndpoint.m */,
+				B5C0711012117408004FD43C /* PYMIDIRealSource.h */,
+				B5C0711112117408004FD43C /* PYMIDIRealSource.m */,
+				B5C0711212117408004FD43C /* PYMIDIUtils.h */,
+				B5C0711312117408004FD43C /* PYMIDIUtils.m */,
+				B5C0711412117408004FD43C /* PYMIDIVirtualDestination.h */,
+				B5C0711512117408004FD43C /* PYMIDIVirtualDestination.m */,
+				B5C0711612117408004FD43C /* PYMIDIVirtualEndpoint.h */,
+				B5C0711712117408004FD43C /* PYMIDIVirtualEndpoint.m */,
+				B5C0711812117408004FD43C /* PYMIDIVirtualSource.h */,
+				B5C0711912117408004FD43C /* PYMIDIVirtualSource.m */,
+			);
+			path = PYMIDI;
+			sourceTree = "<group>";
+		};
+		B5EDC135122BBB4300C784AC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B5EDC136122BBB6E00C784AC /* CommandWindowControllerDelegate.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* command */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "command" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = command;
+			productInstallPath = "$(HOME)/Applications";
+			productName = command;
+			productReference = 8D1107320486CEB800E47090 /* command.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Ivan Rodriguez Murillo";
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "command" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* command */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* command */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				B58D8C4811F8FF5200568199 /* DarthVader.icns in Resources */,
+				B55686FD12088A1F0004E0C8 /* CommandWindow.xib in Resources */,
+				B5E96255122673A9002A7EDB /* settings_32.png in Resources */,
+				B5E9626912267541002A7EDB /* paly_32.png in Resources */,
+				B5E9626A12267541002A7EDB /* stop_32.png in Resources */,
+				D9B66751152F071400B983DE /* command.sdef in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				B59EB94911F6208800D840A6 /* AsyncSocket.m in Sources */,
+				B55686F0120887D00004E0C8 /* CommandWindowController.m in Sources */,
+				B556871712088CA00004E0C8 /* AppDelegate.m in Sources */,
+				B55687BE120894800004E0C8 /* SocketController.m in Sources */,
+				B5C0711A12117408004FD43C /* PYMIDIEndpoint.m in Sources */,
+				B5C0711B12117408004FD43C /* PYMIDIEndpointDescriptor.m in Sources */,
+				B5C0711C12117408004FD43C /* PYMIDIEndpointSet.m in Sources */,
+				B5C0711D12117408004FD43C /* PYMIDIManager.m in Sources */,
+				B5C0711E12117408004FD43C /* PYMIDIRealDestination.m in Sources */,
+				B5C0711F12117408004FD43C /* PYMIDIRealEndpoint.m in Sources */,
+				B5C0712012117408004FD43C /* PYMIDIRealSource.m in Sources */,
+				B5C0712112117408004FD43C /* PYMIDIUtils.m in Sources */,
+				B5C0712212117408004FD43C /* PYMIDIVirtualDestination.m in Sources */,
+				B5C0712312117408004FD43C /* PYMIDIVirtualEndpoint.m in Sources */,
+				B5C0712412117408004FD43C /* PYMIDIVirtualSource.m in Sources */,
+				B5C071C912117C4F004FD43C /* MIDIController.m in Sources */,
+				B55B0D2C121607B800BFC0CF /* command.xcdatamodel in Sources */,
+				B5A26392121D438800EC07F8 /* SettingsModel.m in Sources */,
+				D9B6674E152F064800B983DE /* StartCommand.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		B55686FB12088A1F0004E0C8 /* CommandWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B55686FC12088A1F0004E0C8 /* English */,
+			);
+			name = CommandWindow.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = command_Prefix.pch;
+				INFOPLIST_FILE = "command-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = command;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = command_Prefix.pch;
+				INFOPLIST_FILE = "command-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = command;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = .;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = .;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = .;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PREBINDING = NO;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = .;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "command" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "command" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
