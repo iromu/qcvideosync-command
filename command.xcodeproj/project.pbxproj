@@ -94,6 +94,10 @@
 		B5E9626712267541002A7EDB /* paly_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paly_32.png; sourceTree = "<group>"; };
 		B5E9626812267541002A7EDB /* stop_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop_32.png; sourceTree = "<group>"; };
 		B5EDC136122BBB6E00C784AC /* CommandWindowControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandWindowControllerDelegate.h; sourceTree = "<group>"; };
+		D97A9E2B152F0CA600FC9E0E /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
+		D97A9E2C152F0DCF00FC9E0E /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/es.lproj/CommandWindow.xib; sourceTree = "<absolute>"; };
+		D97A9E2D152F0DCF00FC9E0E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/es.lproj/InfoPlist.strings; sourceTree = "<absolute>"; };
+		D97A9E2E152F0DCF00FC9E0E /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/es.lproj/MainMenu.xib; sourceTree = "<absolute>"; };
 		D9B6674C152F064800B983DE /* StartCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartCommand.h; sourceTree = "<group>"; };
 		D9B6674D152F064800B983DE /* StartCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartCommand.m; sourceTree = "<group>"; };
 		D9B66750152F071400B983DE /* command.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = command.sdef; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 				256AC3F00F4B6AF500CF3369 /* command_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				B54B6E2B12159C7D00874457 /* common.h */,
+				D97A9E2B152F0CA600FC9E0E /* debug.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
+				D97A9E2D152F0DCF00FC9E0E /* es */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -354,6 +360,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DDD58150DA1D0A300B32029 /* English */,
+				D97A9E2E152F0DCF00FC9E0E /* es */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -362,6 +369,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B55686FC12088A1F0004E0C8 /* English */,
+				D97A9E2C152F0DCF00FC9E0E /* es */,
 			);
 			name = CommandWindow.xib;
 			sourceTree = "<group>";
@@ -415,7 +423,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 				USER_HEADER_SEARCH_PATHS = .;
 			};
 			name = Debug;
@@ -433,7 +441,7 @@
 				HEADER_SEARCH_PATHS = .;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PREBINDING = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 				USER_HEADER_SEARCH_PATHS = .;
 			};
 			name = Release;

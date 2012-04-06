@@ -65,11 +65,11 @@
 - (void)mainThread_handleStartScriptCommandSent:(NSNotification *)note
 {
     debug(@"mainThread_handleStartScriptCommandSent selector");
-    [self preVisualization: kPreTime];
+   // [self preVisualization: kPreTime];
     
 }
 - (void)dealloc {
-    NSLog(@"Entering 'AppDelegate.dealloc'.");
+    debug(@"Entering 'AppDelegate.dealloc'.");
 	/*
     [managedObjectContext_ release];
     [managedObjectModel_ release];

@@ -5,3 +5,14 @@
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
 #endif
+
+
+#ifdef DEBUG
+#define DEBUGWHERE_SHOWFULLINFO
+#define DEBUG_SHOWLINES
+#define DEBUG_SHOWFULLPATH
+#define DEBUG_SHOWSEPARATORS
+#define DEBUG_SHOWFULLINFO
+#endif
+
+#import "debug.h"

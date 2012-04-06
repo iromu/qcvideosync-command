@@ -38,5 +38,6 @@
  - (NSString *)applicationDocumentsDirectory;
  */
 - (IBAction) openSettings:(id)sender;
+- (void)handleStartScriptCommandSent:(NSNotification *)note;
 
 @end
