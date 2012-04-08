@@ -52,6 +52,10 @@
 	IBOutlet NSSlider*			pl3NoteSlider;
     IBOutlet NSTextField*		pl3NoteField;
     IBOutlet NSStepper*			pl3NoteStepper;
+    
+    IBOutlet NSTableView*       myTableView;
+    IBOutlet NSArrayController	*myContentArray;
+    IBOutlet NSForm				*myFormFields;
 
 	
 	NSTimer*			nextTimer;
