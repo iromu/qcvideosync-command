@@ -21,7 +21,8 @@
 
 
 //@class AsyncSocket;
-@interface SocketController :  NSObject {
+@interface SocketController :  NSObject <NSNetServiceDelegate>{
+    NSNetService *netService;
 	AsyncSocket*	serverSocket;
 	id<SocketControllerDelegate> theDelegate;
 	

@@ -46,6 +46,8 @@
 	//[inputPopUp addItemWithTitle:[input displayName]];
 	
 	listenSocket = [[SocketController alloc] initWithDelegate: cmdWindowController];
+    
+    
 	
 	[cmdWindowController showWindow:self];
 	

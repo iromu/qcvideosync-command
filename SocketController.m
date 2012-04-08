@@ -21,7 +21,7 @@
 -(id) initWithDelegate: (id<SocketControllerDelegate>) delegate {
 	self = [super init];
 	[self setTheDelegate: delegate];
-	NSLog (@"SocketController.initWithDelegate :: Creating Server socket.");
+	debug (@"SocketController.initWithDelegate :: Creating Server socket.");
 	serverSocket = [[AsyncSocket alloc] initWithDelegate:self];
 	
 	[serverSocket setRunLoopModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
@@ -34,6 +34,8 @@
 }
 
 - (void) stopServer{
+     [netService stop];
+    
 	// Stop accepting connections
 	[serverSocket disconnect];
 	
@@ -47,6 +49,7 @@
 		[[connectedSockets objectAtIndex:i] disconnect];
 	}
 	running = NO;
+   
 	
 }
 
@@ -77,8 +80,18 @@
 	
 	NSError *err = nil;
 	if ([serverSocket acceptOnPort:port error:&err]){
-		NSLog (@"Waiting for connections on port %u.", port);
+		debug (@"Waiting for connections on port %u.", port);
 		running=YES;
+        
+        [netService dealloc];
+        netService = [[NSNetService alloc] initWithDomain:@"local."
+		                                             type:@"_QCVideoSync._tcp."
+		                                             name:@""
+		                                             port:port];
+		
+		[netService setDelegate:self];
+		[netService publish];
+        
 		return YES;
 	}
 	else
@@ -86,17 +99,32 @@
 		// If you get a generic CFSocket error, you probably tried to use a port
 		// number reserved by the operating system.
 		
-		NSLog (@"Cannot accept connections on port %u. Error domain %@ code %d (%@). Exiting.", port, [err domain], [err code], [err localizedDescription]);
+		debug (@"Cannot accept connections on port %u. Error domain %@ code %d (%@). Exiting.", port, [err domain], [err code], [err localizedDescription]);
 		return NO;
 		//exit(1);
 	}
 }
 
 
+- (void)netServiceDidPublish:(NSNetService *)ns
+{
+	debug(@"Bonjour Service Published: domain(%@) type(%@) name(%@) port(%i)",
+			  [ns domain], [ns type], [ns name], (int)[ns port]);
+}
+
+- (void)netService:(NSNetService *)ns didNotPublish:(NSDictionary *)errorDict
+{
+	// Override me to do something here...
+	// 
+	// Note: This method in invoked on our bonjour thread.
+	
+	debug(@"Failed to Publish Service: domain(%@) type(%@) name(%@) - %@",
+               [ns domain], [ns type], [ns name], errorDict);
+}
 
 - (void)onSocket:(AsyncSocket *)sock didAcceptNewSocket:(AsyncSocket *)newSocket
 {
-	NSLog(@"Entering 'onSocket.didAcceptNewSocket'.");
+	debug(@"Entering 'onSocket.didAcceptNewSocket'.");
 	//[newSocket retain];
 	[connectedSockets addObject:newSocket];
 	
@@ -110,7 +138,7 @@
 
 - (void)onSocket:(AsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
 {
-	NSLog(@"Entering 'onSocket.didConnectToHost'.");
+	debug(@"Entering 'onSocket.didConnectToHost'.");
 	NSString * welcomeMsg=nil;//= @"Welcome to the Video Server\r\n";
 	if ([theDelegate respondsToSelector:@selector(didConnectToHost:port:)])
 		welcomeMsg = [theDelegate didConnectToHost: host port: port];	
@@ -141,7 +169,7 @@
 
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
 {
-	NSLog(@"Entering 'onSocket.didReadData'.");
+	debug(@"Entering 'onSocket.didReadData'.");
 	//NSData *strData = [data subdataWithRange:NSMakeRange(0, [data length] - 2)];
 	//NSString *msg = [[[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding] autorelease];
 	
@@ -167,7 +195,7 @@
 				   elapsed:(NSTimeInterval)elapsed
 				 bytesDone:(CFIndex)length
 {
-	NSLog(@"Entering 'onSocket.shouldTimeoutReadWithTag'.");
+	debug(@"Entering 'onSocket.shouldTimeoutReadWithTag'.");
 	if(elapsed <= READ_TIMEOUT)
 	{
 		NSString *warningMsg = @"Are you still there?\r\n";
@@ -183,7 +211,7 @@
 
 - (void)onSocket:(AsyncSocket *)sock willDisconnectWithError:(NSError *)err
 {
-	NSLog(@"Entering 'onSocket.willDisconnectWithError'.");
+	debug(@"Entering 'onSocket.willDisconnectWithError'.");
 	if ([theDelegate respondsToSelector:@selector(onSocketwillDisconnectWithError:port:)])
 		[theDelegate onSocketwillDisconnectWithError: [sock connectedHost] port: [sock connectedPort]];
 	//[self logInfo:FORMAT(@"Client Disconnected: %@:%hu", [sock connectedHost], [sock connectedPort])];
@@ -192,7 +220,7 @@
 
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock
 {
-	NSLog(@"Entering 'onSocket.onSocketDidDisconnect'.");
+	debug(@"Entering 'onSocket.onSocketDidDisconnect'.");
 	[connectedSockets removeObject:sock];
 	
 	if ([theDelegate respondsToSelector:@selector(updateConnectedSockets:)])

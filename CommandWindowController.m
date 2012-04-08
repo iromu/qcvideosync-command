@@ -10,6 +10,8 @@
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 
+#define kUse_Bindings_By_Code	1
+
 @interface CommandWindowController (PrivateAPI)
 - (void)logError:(NSString *)msg;
 - (void)logInfo:(NSString *)msg;
@@ -139,10 +141,43 @@ BOOL fullscreen;
 	
 	[self startStop:nil];
 	
+#if kUse_Bindings_By_Code
+	NSTableColumn *macColumn = [myTableView tableColumnWithIdentifier:@"mac"];
+	[macColumn bind:@"value" toObject:myContentArray withKeyPath:@"arrangedObjects.mac" options:nil];
 	
+	NSTableColumn *delayColumn = [myTableView tableColumnWithIdentifier:@"delay"];
+	[delayColumn bind:@"value" toObject:myContentArray withKeyPath:@"arrangedObjects.delay" options:nil];
+	
+#endif
+	
+    
+#if kUse_Bindings_By_Code
+	NSDictionary *valueOptionsDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [NSNumber numberWithBool:YES], @"NSAllowsEditingMultipleValuesSelection",
+                                      [NSNumber numberWithBool:YES], @"NSConditionallySetsEditable",
+                                      [NSNumber numberWithBool:YES], @"NSRaisesForNotApplicableKeys",
+                                      nil];
+	[[myFormFields cellAtIndex: 0] bind:@"value" toObject:myContentArray withKeyPath:@"selection.mac" options:valueOptionsDict];
+	[[myFormFields cellAtIndex: 1] bind:@"value" toObject:myContentArray withKeyPath:@"selection.delay" options:valueOptionsDict];
+#endif
+    
+    // start listening for selection changes in our NSTableView's array controller
+	[myContentArray addObserver: self
+                     forKeyPath: @"selectionIndexes"
+                        options: NSKeyValueObservingOptionNew
+                        context: NULL];
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 @"Joe", @"mac",
+                                 @"Smith", @"delay",
+                                 nil];
+	[myContentArray addObject: dict];
 	
 }
-
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	NSLog(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+}
 -(void)loadSettings{
 	NSLog(@"Entering 'loadSettings'.");
 	
