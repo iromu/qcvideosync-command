@@ -9,6 +9,8 @@
 #define WELCOME_MSG  0
 #define ECHO_MSG     1
 #define WARNING_MSG  2
+#define TICK_MSG     3
+
 
 #define NO_TIMEOUT -1
 #define READ_TIMEOUT 15.0

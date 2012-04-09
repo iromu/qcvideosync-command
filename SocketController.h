@@ -7,7 +7,9 @@
 //
 
 #include <common.h>
-#include "AsyncSocket.h"
+#import "GCDAsyncSocket.h"
+
+@class SimplePingController;
 
 @protocol SocketControllerDelegate <NSObject>
 @optional
@@ -17,20 +19,22 @@
 - (void)updateConnectedSockets:(NSUInteger)connectedSockets;
 - (NSString *)didConnectToHost:(NSString *)host port:(UInt16)port;
 - (void)onSocketwillDisconnectWithError:(NSString *)host port:(UInt16)port;
+-(void)updatePeer:(NSString *) peer withLag: (double) lag;
 @end
 
 
-//@class AsyncSocket;
-@interface SocketController :  NSObject <NSNetServiceDelegate>{
+@interface SocketController :  NSObject <NSNetServiceDelegate,GCDAsyncSocketDelegate>{
     NSNetService *netService;
-	AsyncSocket*	serverSocket;
+	GCDAsyncSocket*	serverSocket;
 	id<SocketControllerDelegate> theDelegate;
 	
 	BOOL			running;
 	NSMutableArray*	connectedSockets;
+    
+    SimplePingController* pingController;
 }
 
-@property (readwrite, retain) id<SocketControllerDelegate> theDelegate;	
+@property (readwrite, strong) id<SocketControllerDelegate> theDelegate;	
 @property (readwrite, assign) BOOL running;	
 
 -(id) initWithDelegate: (id<SocketControllerDelegate>) theDelegate;

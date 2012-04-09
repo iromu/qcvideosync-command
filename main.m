@@ -10,12 +10,12 @@
 
 int main(int argc, char *argv[])
 {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-	int retVal = NSApplicationMain(argc,  (const char **) argv);
-	
-	[pool release];
-	//[pool drain];
-	
+		int retVal = NSApplicationMain(argc,  (const char **) argv);
+		
+		//[pool drain];
+		
     return retVal;
+    }
 }

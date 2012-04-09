@@ -60,7 +60,7 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
 		//if ([theDelegate respondsToSelector:@selector(inputPopUpAddItem:)])
 			[theDelegate inputPopUpAddItem: inputDetected];
 
-		input  = [inputDetected retain];
+		input  = inputDetected;
 		[input addReceiver:self];
     }
 }
@@ -128,7 +128,7 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
         if (messageStart < inPacket->length) {
             //messageEnd = findEndOfMessage (inPacket, messageStart);
 			@try {
-				[self processMIDIMessage:&inPacket->data[messageStart]];
+				[self processMIDIMessage:(Byte*)&inPacket->data[messageStart]];
 			} 
 			@catch (id theException) {
 				NSLog(@"%@", theException);

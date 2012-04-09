@@ -38,7 +38,7 @@ BOOL fullscreen;
 
 - initWithPath:(NSString *)newPath
 {
-	NSLog(@"Entering 'CommandWindowController.initWithPath'.");
+	debug(@"Entering 'CommandWindowController.initWithPath'.");
     return [super initWithWindowNibName:@"CommandWindow"];
 }
 
@@ -48,24 +48,20 @@ BOOL fullscreen;
  */
 
 - (void)dealloc {
-	NSLog(@"Entering 'CommandWindowController.dealloc'.");
+	debug(@"Entering 'CommandWindowController.dealloc'.");
 	
-    [managedObjectContext release];
-    [persistentStoreCoordinator release];
-    [managedObjectModel release];
 	
-    [super dealloc];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	NSLog(@"Entering 'CommandWindowController.applicationShouldTerminate'.");
+	debug(@"Entering 'CommandWindowController.applicationShouldTerminate'.");
 	
 	[self saveSettings];
 	
     if (!managedObjectContext) return NSTerminateNow;
 	
     if (![managedObjectContext commitEditing]) {
-        NSLog(@"%@:%s unable to commit editing to terminate", [self class], _cmd);
+        debug(@"%@:%s unable to commit editing to terminate", [self class], _cmd);
         return NSTerminateCancel;
     }
 	
@@ -73,7 +69,7 @@ BOOL fullscreen;
 	
     NSError *error = nil;
     if (![managedObjectContext save:&error]) {
-		NSLog(@"Entering 'CommandWindowController.applicationShouldTerminate'. ERROR");
+		debug(@"Entering 'CommandWindowController.applicationShouldTerminate'. ERROR");
 		
         // This error handling simply presents error information in a panel with an 
         // "Ok" button, which does not include any attempt at error recovery (meaning, 
@@ -98,13 +94,12 @@ BOOL fullscreen;
         [alert addButtonWithTitle:cancelButton];
 		
         NSInteger answer = [alert runModal];
-        [alert release];
         alert = nil;
         
         if (answer == NSAlertAlternateReturn) return NSTerminateCancel;
 		
     }
-	NSLog(@"Entering 'CommandWindowController.applicationShouldTerminate'. SAVED");
+	debug(@"Entering 'CommandWindowController.applicationShouldTerminate'. SAVED");
 	
     return NSTerminateNow;
 	
@@ -112,32 +107,20 @@ BOOL fullscreen;
 
 - (void)awakeFromNib
 {
-	NSLog(@"Entering 'CommandWindowController.awakeFromNib'.");
+	debug(@"Entering 'CommandWindowController.awakeFromNib'.");
 	
 	[self loadSettings];
-	
-	
+    
 	currentPL = 1;
 	nextIndex=1;
 	//Format Date
 	dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat: @"yyyy-MM-dd HH:mm:ss"]; // 2009-02-01 19:50:41 PST
-	
-	
-	
-	/*
-	 [indicator setMaxValue: 100];
-	 [indicator setNumberOfMajorTickMarks: 4];
-	 [indicator setNumberOfTickMarks: 7];
-	 [indicator setWarningValue: 5];
-	 [indicator setCriticalValue: 8];*/
-	//[[indicator cell] setLevelIndicatorStyle: NSDiscreteCapacityLevelIndicatorStyle];
+    
 	int intervalInt = [timeInterval intValue];
 	[indicator setMaxValue: intervalInt];
 	[indicator setNumberOfMajorTickMarks: 4];
 	[indicator setNumberOfTickMarks: intervalInt];
-	
-	
 	
 	[self startStop:nil];
 	
@@ -147,11 +130,7 @@ BOOL fullscreen;
 	
 	NSTableColumn *delayColumn = [myTableView tableColumnWithIdentifier:@"delay"];
 	[delayColumn bind:@"value" toObject:myContentArray withKeyPath:@"arrangedObjects.delay" options:nil];
-	
-#endif
-	
     
-#if kUse_Bindings_By_Code
 	NSDictionary *valueOptionsDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithBool:YES], @"NSAllowsEditingMultipleValuesSelection",
                                       [NSNumber numberWithBool:YES], @"NSConditionallySetsEditable",
@@ -166,21 +145,14 @@ BOOL fullscreen;
                      forKeyPath: @"selectionIndexes"
                         options: NSKeyValueObservingOptionNew
                         context: NULL];
-    
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 @"Joe", @"mac",
-                                 @"Smith", @"delay",
-                                 nil];
-	[myContentArray addObject: dict];
 	
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	NSLog(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+	debug(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
 }
 -(void)loadSettings{
-	NSLog(@"Entering 'loadSettings'.");
-	
+	debug(@"Entering 'loadSettings'.");
 	
 	settingsModel = [[SettingsModel alloc]init];
 	
@@ -191,25 +163,15 @@ BOOL fullscreen;
 						inManagedObjectContext:context]];
 	
 	NSArray *results = [context executeFetchRequest:request error:nil];
-	// STAssertTrue(([results count] == 1), @"Exactly one person should have been fetched");
+    
 	NSManagedObject *object=[results lastObject];
 	if ([results count] == 0) {
-		NSLog(@"Insert");
+		debug(@"Insert");
 		
 		object=[NSEntityDescription	insertNewObjectForEntityForName:@"settings"
-											 inManagedObjectContext:context];
-		//[context insertObject:object];
-		//[context save:nil];
-		
+											 inManagedObjectContext:context];	
 	}
-	/*else {
-	 NSLog(@"SELECT");
-	 NSLog(@"results: %hu",[results count]);
-	 object = [results lastObject];
-	 }
-	 */
-	
-	
+    
 	settingsModel.port =		[object valueForKey:@"port"] ;
 	settingsModel.interval =	[object valueForKey:@"interval"] ;
 	settingsModel.fullscreen =	[object valueForKey:@"fullscreen" ];
@@ -219,22 +181,13 @@ BOOL fullscreen;
 	settingsModel.pl3Note = [object valueForKey:@"pl3Note" ];	
 	
 	[self applySettings];
-	
-	/*
-	 
-	 NSLog(@"DELETE");
-	 
-	 [context deleteObject:object];
-	 [context save:nil];
-	 */
-	//[object release];
-	[request release];
+    
 }
 
 
 
 -(void)saveSettings{
-	NSLog(@"Entering 'saveSettings'.");
+	debug(@"Entering 'saveSettings'.");
 	
 	NSManagedObjectContext *context=[self managedObjectContext];
 	
@@ -257,20 +210,19 @@ BOOL fullscreen;
 	
 	[context save:nil];
 	
-	[request release];
 }
 
 -(void)applySettings{
-	NSLog(@"Entering 'CommandWindowController.applySettings'.");
+	debug(@"Entering 'CommandWindowController.applySettings'.");
 	
-	NSLog(@"port: %@",settingsModel.port);
-	NSLog(@"interval: %@",settingsModel.interval);
-	NSLog(@"fullscreen: %@",settingsModel.fullscreen);
+	debug(@"port: %@",settingsModel.port);
+	debug(@"interval: %@",settingsModel.interval);
+	debug(@"fullscreen: %@",settingsModel.fullscreen);
 	
 	
-	NSLog(@"pl1Note: %@",settingsModel.pl1Note);
-	NSLog(@"pl2Note: %@",settingsModel.pl2Note);
-	NSLog(@"pl3Note: %@",settingsModel.pl3Note);
+	debug(@"pl1Note: %@",settingsModel.pl1Note);
+	debug(@"pl2Note: %@",settingsModel.pl2Note);
+	debug(@"pl3Note: %@",settingsModel.pl3Note);
 	
 	[portField setStringValue:FORMAT(@"%@", settingsModel.port)];
 	[timeInterval setStringValue:FORMAT(@"%@", settingsModel.interval)];
@@ -281,7 +233,7 @@ BOOL fullscreen;
 
 - (IBAction)startStop:(id)sender
 {
-	NSLog(@"Entering 'CommandWindowController.startStop'.");
+	debug(@"Entering 'CommandWindowController.startStop'.");
 	if(![theDelegate.listenSocket running])
 	{
 		int port = [portField intValue];
@@ -299,12 +251,12 @@ BOOL fullscreen;
 			[self logError:FORMAT(@"Error starting server")];
 		}
 		
-		
 		[portField setEnabled:NO];
 		[startStopButton setTitle:@"Stop"];
 	}
 	else
 	{
+        [self stopRepeatingTimer];
 		[theDelegate.listenSocket stopServer];
 		
 		[portField setEnabled:YES];
@@ -318,21 +270,16 @@ BOOL fullscreen;
 
 - (IBAction) sendStartCommand:(id)sender
 {
-	NSLog(@"Entering 'sendStartCommand'.");
+	debug(@"Entering 'sendStartCommand'.");
 	
 	[startCmdButton setEnabled:NO];
-	//[stopCmdButton setEnabled:YES];
-	
-	//[self logInfo: @"Server sent START"];	
-	//[[[logView textStorage] mutableString] appendString: @"Server send StartCommand\n"];
-	//[listenSocket broadcastCommand:@"START"];
 	
 	[self startRepeatingTimer];
 }
 
 - (IBAction) sendStopCommand:(id)sender
 {
-	NSLog(@"Entering 'sendStopCommand'.");
+	debug(@"Entering 'sendStopCommand'.");
 	
 	[startCmdButton setEnabled:YES];
 	
@@ -344,22 +291,22 @@ BOOL fullscreen;
 
 - (IBAction) sendPL1Command:(id)sender
 {
-	NSLog(@"Entering 'sendPL1Command'.");
+	debug(@"Entering 'sendPL1Command'.");
 	[self sendPLCommand: 1];
 }
 - (IBAction) sendPL2Command:(id)sender
 {
-	NSLog(@"Entering 'sendPL2Command'.");
+	debug(@"Entering 'sendPL2Command'.");
 	[self sendPLCommand: 2];
 }
 - (IBAction) sendPL3Command:(id)sender
 {
-	NSLog(@"Entering 'sendPL3Command'.");
+	debug(@"Entering 'sendPL3Command'.");
 	[self sendPLCommand: 3];
 }
 
 - (void) sendPLCommand: (NSUInteger) number{
-	NSLog(@"Entering 'sendPLCommand'.");
+	debug(@"Entering 'sendPLCommand'.");
 	NSString *command = [NSString stringWithFormat:@"PL %hu",number];
 	[startCmdButton setEnabled:NO];
 	[self stopRepeatingTimer];
@@ -373,15 +320,7 @@ BOOL fullscreen;
 
 - (IBAction)openSettings:(id)sender
 {
-	NSLog(@"Entering 'CommandWindowController.openSettings'.");
-    //[self setInputPopUp];
-    
-    //[virtualEndpointTabView selectTabViewItemAtIndex:0];
-	
-    // Put everything that happens in the panel into its own undo group
-    //[[self undoManager] beginUndoGrouping];
-    
-    //panelWasOpenedToInputs = YES;
+	debug(@"Entering 'CommandWindowController.openSettings'.");
 	
 	[theDelegate updateMIDISources];
 	
@@ -404,7 +343,7 @@ BOOL fullscreen;
 }
 - (IBAction)settingsPanelButtonPressed:(id)sender
 {
-	NSLog(@"Entering 'CommandWindowController.settingsPanelButtonPressed'.");
+	debug(@"Entering 'CommandWindowController.settingsPanelButtonPressed'.");
 	
 	[self saveAction:sender];
 	
@@ -418,7 +357,7 @@ BOOL fullscreen;
 
 - (void)settingsPanelDidEnd:(NSWindow*)sheet returnCode:(int)returnCode contextInfo:(void*)contextInfo
 {
-	NSLog(@"Entering 'CommandWindowController.settingsPanelDidEnd'.");
+	debug(@"Entering 'CommandWindowController.settingsPanelDidEnd'.");
 }
 
 - (void)scrollToBottom
@@ -436,28 +375,25 @@ BOOL fullscreen;
 
 
 - (void)startRepeatingTimer {
-	NSLog(@"Entering 'startRepeatingTimer'.");
+	debug(@"Entering 'startRepeatingTimer'.");
 	
 	if(nextTimer == nil){
-		
-		
-		
 		//double interval = [timeInterval doubleValue];
 		int intervalInt = [timeInterval intValue];
 		//(NSNumber *)
 		settingsModel.interval = [NSNumber numberWithInt: intervalInt];
-		NSLog(FORMAT(@"Server will repeat NEXT command every %d seconds",intervalInt));
+		debug(@"Server will repeat NEXT command every %d seconds",intervalInt);
 		[self logInfo:FORMAT(@"Server will repeat NEXT command every %d seconds",intervalInt)];
-		NSLog(@"log 'startRepeatingTimer'.");
+		debug(@"log 'startRepeatingTimer'.");
 		nextTimer = [NSTimer scheduledTimerWithTimeInterval:[timeInterval doubleValue]
 													 target:self selector:@selector(timerTargetMethod)
 												   userInfo:nil repeats:YES];
-		NSLog(@"nextTimer 'startRepeatingTimer'.");
+		debug(@"nextTimer 'startRepeatingTimer'.");
 		updateIndicatorTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
 																target:self selector:@selector(updateIndicator)
 															  userInfo:nil repeats:YES];
 		
-		NSLog(@"updateIndicatorTimer 'startRepeatingTimer'.");	
+		debug(@"updateIndicatorTimer 'startRepeatingTimer'.");	
 		//[nextTimer retain];
 		//[updateIndicatorTimer retain];
 		[nextTimer fire];
@@ -469,11 +405,11 @@ BOOL fullscreen;
 		[indicator setNumberOfMajorTickMarks: 5];
 		[indicator setNumberOfTickMarks: intervalInt+1];
 	}
-	NSLog(@"Exiting 'startRepeatingTimer'.");
+	debug(@"Exiting 'startRepeatingTimer'.");
 	
 }
 - (void)stopRepeatingTimer {
-	NSLog(@"Entering 'stopRepeatingTimer'.");
+	debug(@"Entering 'stopRepeatingTimer'.");
     [nextTimer invalidate];
 	[updateIndicatorTimer invalidate];
     nextTimer = nil;
@@ -492,7 +428,7 @@ BOOL fullscreen;
 
 - (void)timerTargetMethod {
     //NSDate *startDate = [[theTimer userInfo] objectForKey:@"StartDate"];
-    //NSLog(@"Timer started on %@", startDate);
+    //debug(@"Timer started on %@", startDate);
 	
 	//[indicator setIntValue: 0];
 	
@@ -533,7 +469,7 @@ BOOL fullscreen;
 	[attributes setObject:[NSColor redColor] forKey:NSForegroundColorAttributeName];
 	
 	NSAttributedString *as = [[NSAttributedString alloc] initWithString:paragraph attributes:attributes];
-	[as autorelease];
+	//[as autorelease];
 	
 	[[logView textStorage] appendAttributedString:as];
 	[self scrollToBottom];
@@ -547,7 +483,7 @@ BOOL fullscreen;
 	[attributes setObject:[NSColor purpleColor] forKey:NSForegroundColorAttributeName];
 	
 	NSAttributedString *as = [[NSAttributedString alloc] initWithString:paragraph attributes:attributes];
-	[as autorelease];
+	//[as autorelease];
 	
 	[[logView textStorage] appendAttributedString:as];
 	[self scrollToBottom];
@@ -561,7 +497,7 @@ BOOL fullscreen;
 	[attributes setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
 	
 	NSAttributedString *as = [[NSAttributedString alloc] initWithString:paragraph attributes:attributes];
-	[as autorelease];
+	//[as autorelease];
 	
 	[[logView textStorage] appendAttributedString:as];
 	[self scrollToBottom];
@@ -573,7 +509,7 @@ BOOL fullscreen;
 
 - (void)updateConnectedSockets:(NSUInteger)connectedSockets{
 	
-	if (connectedSockets<4) {
+	if (connectedSockets<1) {
 		//red
 		[connCounter setTextColor: NSColor.redColor];
 	}else {
@@ -592,6 +528,27 @@ BOOL fullscreen;
 
 - (NSString *)didConnectToHost:(NSString *)host port:(UInt16)port{
 	[self logInfo:FORMAT(@"Accepted client %@:%hu", host, port)];
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 FORMAT(@"%@:%hu", host, port), @"mac",
+                                 @"0ms", @"delay",
+                                 nil];
+    NSArray * arrangedObjects = myContentArray.arrangedObjects;
+    
+    NSString* compare = FORMAT(@"%@:%hu", host, port);
+    
+    [arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop){
+        NSString* id = [obj objectForKey:@"mac"];
+        NSLog(@"Object: %@",id);
+        if([id localizedCaseInsensitiveCompare:compare] == NSOrderedSame){
+            NSLog(@"Object Found: %@ at index: %lu",obj, index);
+            *stop=YES;
+        }
+    } ];
+    
+	[myContentArray addObject: dict];
+    
+    
 	if(self.nextTimer){
 		uint64_t elapsed =  mach_absolute_time()-self.start;
 		Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
@@ -600,10 +557,32 @@ BOOL fullscreen;
 		return command;
 	}
 	else 
-		return nil;
+		return @"Wellcome";
+}
+-(void)updatePeer:(NSString *) peer withLag: (double) lag
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 peer, @"mac",
+                                 FORMAT(@"%f ms",lag), @"delay",
+                                 nil];
+	[myContentArray addObject: dict];
 }
 - (void)onSocketwillDisconnectWithError:(NSString *)host port:(UInt16)port{
 	[self logInfo:FORMAT(@"Client Disconnected: %@:%hu", host, port)];
+    //[myContentArray setFetchPredicate:[NSPredicate predicateWithFormat:@"mac == %@", FORMAT(@"%@:%hu", host, port)]];
+    
+    //[myContentArray setEntityName:@"Entry"];
+    //[myContentArray setManagedObjectContext:[self managedObjectContext]];
+    //    [myContentArray setFilterPredicate:[NSPredicate predicateWithFormat:@"mac == %@", [NSNumber numberWithInt:1]]];
+    /*  
+     
+     NSError* error = [[NSError alloc]init ];
+     
+     if ([myContentArray fetchWithRequest:nil merge:YES error:&error] == NO) {
+     debug(@"Error fetching entries: %@", error.description);
+     } else {
+     debug(@"Found %lu entries.", [[myContentArray arrangedObjects] count]);
+     }*/
 }
 
 
@@ -612,24 +591,24 @@ BOOL fullscreen;
 
 
 - (void)inputPopUpRemoveAllItems {
-	NSLog(@"Entering 'CommandWindowController.inputPopUpRemoveAllItems'.");
+	debug(@"Entering 'CommandWindowController.inputPopUpRemoveAllItems'.");
 	[inputPopUp removeAllItems];
 }
 
 
 - (void)inputPopUpAddItem:(PYMIDIEndpoint*)input  {
-	NSLog(@"Entering 'CommandWindowController.inputPopUpAddItem'. %@",[input displayName]);
+	debug(@"Entering 'CommandWindowController.inputPopUpAddItem'. %@",[input displayName]);
 	[inputPopUp addItemWithTitle:[input displayName]];
 	//[[inputPopUp lastItem] setRepresentedObject:input];
 }
 
 
 - (void)inputPopUpAddItems:(NSArray*)items  {
-	NSLog(@"Entering 'CommandWindowController.inputPopUpAddItems'.");
+	debug(@"Entering 'CommandWindowController.inputPopUpAddItems'.");
 	[inputPopUp removeAllItems];
 	
 	for (NSString *item in items) {
-		NSLog(@"%@", item);
+		debug(@"%@", item);
 		[inputPopUp addItemWithTitle:item];
 	}
 }
@@ -642,14 +621,14 @@ BOOL fullscreen;
  */
 
 - (IBAction) saveAction:(id)sender {
-	NSLog(@"Entering 'CommandWindowController.saveAction'.");
+	debug(@"Entering 'CommandWindowController.saveAction'.");
 	
     NSError *error = nil;
     
 	[self saveSettings];
 	
     if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%s unable to commit editing before saving", [self class], _cmd);
+        debug(@"%@:%s unable to commit editing before saving", [self class], _cmd);
     }
 	
     if (![[self managedObjectContext] save:&error]) {
@@ -665,12 +644,12 @@ BOOL fullscreen;
  */
 
 - (NSString *)applicationSupportDirectory {
-	NSLog(@"Entering 'CommandWindowController.applicationSupportDirectory'.");
+	debug(@"Entering 'CommandWindowController.applicationSupportDirectory'.");
 	
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
 	
-	NSLog(@"Path: %@",[basePath stringByAppendingPathComponent:@"command"]);
+	debug(@"Path: %@",[basePath stringByAppendingPathComponent:@"command"]);
     return [basePath stringByAppendingPathComponent:@"command"];
 }
 
@@ -680,11 +659,11 @@ BOOL fullscreen;
  */
 
 - (NSManagedObjectModel *)managedObjectModel {
-	NSLog(@"Entering 'CommandWindowController.managedObjectModel'.");
+	debug(@"Entering 'CommandWindowController.managedObjectModel'.");
 	
     if (managedObjectModel) return managedObjectModel;
 	
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];    
     return managedObjectModel;
 }
 
@@ -697,14 +676,14 @@ BOOL fullscreen;
  */
 
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
-	NSLog(@"Entering 'CommandWindowController.persistentStoreCoordinator'.");
+	debug(@"Entering 'CommandWindowController.persistentStoreCoordinator'.");
 	
     if (persistentStoreCoordinator) return persistentStoreCoordinator;
 	
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSAssert(NO, @"Managed object model is nil");
-        NSLog(@"%@:%s No model to generate a store from", [self class], _cmd);
+        debug(@"%@:%s No model to generate a store from", [self class], _cmd);
         return nil;
     }
 	
@@ -715,7 +694,7 @@ BOOL fullscreen;
     if ( ![fileManager fileExistsAtPath:applicationSupportDirectory isDirectory:NULL] ) {
 		if (![fileManager createDirectoryAtPath:applicationSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error]) {
             NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportDirectory,error]));
-            NSLog(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
+            debug(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
             return nil;
 		}
     }
@@ -728,7 +707,7 @@ BOOL fullscreen;
 														options:nil 
 														  error:&error]){
         [[NSApplication sharedApplication] presentError:error];
-        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        persistentStoreCoordinator = nil;
         return nil;
     }    
 	
@@ -741,7 +720,7 @@ BOOL fullscreen;
  */
 
 - (NSManagedObjectContext *) managedObjectContext {
-	NSLog(@"Entering 'CommandWindowController.managedObjectContext'.");
+	debug(@"Entering 'CommandWindowController.managedObjectContext'.");
 	
     if (managedObjectContext) return managedObjectContext;
 	
@@ -793,7 +772,7 @@ BOOL fullscreen;
 
 - (void)setNote:(Byte)note forPlayList: (int) number
 {
-	//NSLog(@"Entering 'CommandWindowController.setNote'.");
+	//debug(@"Entering 'CommandWindowController.setNote'.");
 	
 	switch (number) {
 		case 1:
@@ -831,7 +810,7 @@ BOOL fullscreen;
 }
 
 - (void) processMIDINote: (int) note{
-	NSLog(@"Entering 'CommandWindowController.processMIDINote'.");
+	debug(@"Entering 'CommandWindowController.processMIDINote'.");
 	
 	
 	if (note == [settingsModel.pl1Note intValue] && currentPL != 1) {

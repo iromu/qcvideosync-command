@@ -46,7 +46,7 @@
 
 }
 
-@property (readwrite, retain) id<MIDIControllerDelegate> theDelegate;	
+@property (readwrite, strong) id<MIDIControllerDelegate> theDelegate;	
 
 -(MIDIController *) initWithDelegate: (id<MIDIControllerDelegate>) delegate;
 

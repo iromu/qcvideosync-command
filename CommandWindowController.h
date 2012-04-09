@@ -58,8 +58,8 @@
     IBOutlet NSForm				*myFormFields;
 
 	
-	NSTimer*			nextTimer;
-	NSTimer*			updateIndicatorTimer;
+	NSTimer*			__weak nextTimer;
+	NSTimer*			__weak updateIndicatorTimer;
 	uint64_t			start;
 	NSUInteger			nextIndex;
 	NSUInteger			currentPL;
@@ -71,15 +71,15 @@
 	
 	SettingsModel*		settingsModel;
 }
-@property (readwrite, retain) id<CommandWindowControllerDelegate> theDelegate;
+@property (readwrite, strong) id<CommandWindowControllerDelegate> theDelegate;
 
-@property (assign) NSTimer*	nextTimer;
-@property (assign) NSTimer*	updateIndicatorTimer;
+@property (weak) NSTimer*	nextTimer;
+@property (weak) NSTimer*	updateIndicatorTimer;
 @property uint64_t			start;
 
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
 - (IBAction) startStop:(id)sender;
 
@@ -113,4 +113,5 @@
 - (IBAction)pl3NoteSliderChanged:(id)sender;
 - (IBAction)pl3NoteStepperChanged:(id)sender;
 - (void) processMIDINote: (int) note;
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 @end
