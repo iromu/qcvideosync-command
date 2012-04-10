@@ -38,7 +38,7 @@ BOOL fullscreen;
 
 - initWithPath:(NSString *)newPath
 {
-	debug(@"Entering 'CommandWindowController.initWithPath'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.initWithPath'.");
     return [super initWithWindowNibName:@"CommandWindow"];
 }
 
@@ -48,20 +48,20 @@ BOOL fullscreen;
  */
 
 - (void)dealloc {
-	debug(@"Entering 'CommandWindowController.dealloc'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.dealloc'.");
 	
 	
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	debug(@"Entering 'CommandWindowController.applicationShouldTerminate'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.applicationShouldTerminate'.");
 	
 	[self saveSettings];
 	
     if (!managedObjectContext) return NSTerminateNow;
 	
     if (![managedObjectContext commitEditing]) {
-        debug(@"%@:%s unable to commit editing to terminate", [self class], _cmd);
+        DDLogVerbose(@"%@:%s unable to commit editing to terminate", [self class], _cmd);
         return NSTerminateCancel;
     }
 	
@@ -69,7 +69,7 @@ BOOL fullscreen;
 	
     NSError *error = nil;
     if (![managedObjectContext save:&error]) {
-		debug(@"Entering 'CommandWindowController.applicationShouldTerminate'. ERROR");
+		DDLogVerbose(@"Entering 'CommandWindowController.applicationShouldTerminate'. ERROR");
 		
         // This error handling simply presents error information in a panel with an 
         // "Ok" button, which does not include any attempt at error recovery (meaning, 
@@ -99,7 +99,7 @@ BOOL fullscreen;
         if (answer == NSAlertAlternateReturn) return NSTerminateCancel;
 		
     }
-	debug(@"Entering 'CommandWindowController.applicationShouldTerminate'. SAVED");
+	DDLogVerbose(@"Entering 'CommandWindowController.applicationShouldTerminate'. SAVED");
 	
     return NSTerminateNow;
 	
@@ -107,7 +107,7 @@ BOOL fullscreen;
 
 - (void)awakeFromNib
 {
-	debug(@"Entering 'CommandWindowController.awakeFromNib'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.awakeFromNib'.");
 	
 	[self loadSettings];
     
@@ -149,10 +149,10 @@ BOOL fullscreen;
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	debug(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+	DDLogVerbose(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
 }
 -(void)loadSettings{
-	debug(@"Entering 'loadSettings'.");
+	DDLogVerbose(@"Entering 'loadSettings'.");
 	
 	settingsModel = [[SettingsModel alloc]init];
 	
@@ -166,7 +166,7 @@ BOOL fullscreen;
     
 	NSManagedObject *object=[results lastObject];
 	if ([results count] == 0) {
-		debug(@"Insert");
+		DDLogVerbose(@"Insert");
 		
 		object=[NSEntityDescription	insertNewObjectForEntityForName:@"settings"
 											 inManagedObjectContext:context];	
@@ -187,7 +187,7 @@ BOOL fullscreen;
 
 
 -(void)saveSettings{
-	debug(@"Entering 'saveSettings'.");
+	DDLogVerbose(@"Entering 'saveSettings'.");
 	
 	NSManagedObjectContext *context=[self managedObjectContext];
 	
@@ -213,16 +213,16 @@ BOOL fullscreen;
 }
 
 -(void)applySettings{
-	debug(@"Entering 'CommandWindowController.applySettings'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.applySettings'.");
 	
-	debug(@"port: %@",settingsModel.port);
-	debug(@"interval: %@",settingsModel.interval);
-	debug(@"fullscreen: %@",settingsModel.fullscreen);
+	DDLogVerbose(@"port: %@",settingsModel.port);
+	DDLogVerbose(@"interval: %@",settingsModel.interval);
+	DDLogVerbose(@"fullscreen: %@",settingsModel.fullscreen);
 	
 	
-	debug(@"pl1Note: %@",settingsModel.pl1Note);
-	debug(@"pl2Note: %@",settingsModel.pl2Note);
-	debug(@"pl3Note: %@",settingsModel.pl3Note);
+	DDLogVerbose(@"pl1Note: %@",settingsModel.pl1Note);
+	DDLogVerbose(@"pl2Note: %@",settingsModel.pl2Note);
+	DDLogVerbose(@"pl3Note: %@",settingsModel.pl3Note);
 	
 	[portField setStringValue:FORMAT(@"%@", settingsModel.port)];
 	[timeInterval setStringValue:FORMAT(@"%@", settingsModel.interval)];
@@ -233,7 +233,7 @@ BOOL fullscreen;
 
 - (IBAction)startStop:(id)sender
 {
-	debug(@"Entering 'CommandWindowController.startStop'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.startStop'.");
 	if(![theDelegate.listenSocket running])
 	{
 		int port = [portField intValue];
@@ -270,7 +270,7 @@ BOOL fullscreen;
 
 - (IBAction) sendStartCommand:(id)sender
 {
-	debug(@"Entering 'sendStartCommand'.");
+	DDLogVerbose(@"Entering 'sendStartCommand'.");
 	
 	[startCmdButton setEnabled:NO];
 	
@@ -279,7 +279,7 @@ BOOL fullscreen;
 
 - (IBAction) sendStopCommand:(id)sender
 {
-	debug(@"Entering 'sendStopCommand'.");
+	DDLogVerbose(@"Entering 'sendStopCommand'.");
 	
 	[startCmdButton setEnabled:YES];
 	
@@ -291,22 +291,22 @@ BOOL fullscreen;
 
 - (IBAction) sendPL1Command:(id)sender
 {
-	debug(@"Entering 'sendPL1Command'.");
+	DDLogVerbose(@"Entering 'sendPL1Command'.");
 	[self sendPLCommand: 1];
 }
 - (IBAction) sendPL2Command:(id)sender
 {
-	debug(@"Entering 'sendPL2Command'.");
+	DDLogVerbose(@"Entering 'sendPL2Command'.");
 	[self sendPLCommand: 2];
 }
 - (IBAction) sendPL3Command:(id)sender
 {
-	debug(@"Entering 'sendPL3Command'.");
+	DDLogVerbose(@"Entering 'sendPL3Command'.");
 	[self sendPLCommand: 3];
 }
 
 - (void) sendPLCommand: (NSUInteger) number{
-	debug(@"Entering 'sendPLCommand'.");
+	DDLogVerbose(@"Entering 'sendPLCommand'.");
 	NSString *command = [NSString stringWithFormat:@"PL %hu",number];
 	[startCmdButton setEnabled:NO];
 	[self stopRepeatingTimer];
@@ -320,7 +320,7 @@ BOOL fullscreen;
 
 - (IBAction)openSettings:(id)sender
 {
-	debug(@"Entering 'CommandWindowController.openSettings'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.openSettings'.");
 	
 	[theDelegate updateMIDISources];
 	
@@ -343,7 +343,7 @@ BOOL fullscreen;
 }
 - (IBAction)settingsPanelButtonPressed:(id)sender
 {
-	debug(@"Entering 'CommandWindowController.settingsPanelButtonPressed'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.settingsPanelButtonPressed'.");
 	
 	[self saveAction:sender];
 	
@@ -357,7 +357,7 @@ BOOL fullscreen;
 
 - (void)settingsPanelDidEnd:(NSWindow*)sheet returnCode:(int)returnCode contextInfo:(void*)contextInfo
 {
-	debug(@"Entering 'CommandWindowController.settingsPanelDidEnd'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.settingsPanelDidEnd'.");
 }
 
 - (void)scrollToBottom
@@ -375,25 +375,25 @@ BOOL fullscreen;
 
 
 - (void)startRepeatingTimer {
-	debug(@"Entering 'startRepeatingTimer'.");
+	DDLogVerbose(@"Entering 'startRepeatingTimer'.");
 	
 	if(nextTimer == nil){
 		//double interval = [timeInterval doubleValue];
 		int intervalInt = [timeInterval intValue];
 		//(NSNumber *)
 		settingsModel.interval = [NSNumber numberWithInt: intervalInt];
-		debug(@"Server will repeat NEXT command every %d seconds",intervalInt);
+		DDLogVerbose(@"Server will repeat NEXT command every %d seconds",intervalInt);
 		[self logInfo:FORMAT(@"Server will repeat NEXT command every %d seconds",intervalInt)];
-		debug(@"log 'startRepeatingTimer'.");
+		DDLogVerbose(@"log 'startRepeatingTimer'.");
 		nextTimer = [NSTimer scheduledTimerWithTimeInterval:[timeInterval doubleValue]
 													 target:self selector:@selector(timerTargetMethod)
 												   userInfo:nil repeats:YES];
-		debug(@"nextTimer 'startRepeatingTimer'.");
+		DDLogVerbose(@"nextTimer 'startRepeatingTimer'.");
 		updateIndicatorTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
 																target:self selector:@selector(updateIndicator)
 															  userInfo:nil repeats:YES];
 		
-		debug(@"updateIndicatorTimer 'startRepeatingTimer'.");	
+		DDLogVerbose(@"updateIndicatorTimer 'startRepeatingTimer'.");	
 		//[nextTimer retain];
 		//[updateIndicatorTimer retain];
 		[nextTimer fire];
@@ -405,11 +405,11 @@ BOOL fullscreen;
 		[indicator setNumberOfMajorTickMarks: 5];
 		[indicator setNumberOfTickMarks: intervalInt+1];
 	}
-	debug(@"Exiting 'startRepeatingTimer'.");
+	DDLogVerbose(@"Exiting 'startRepeatingTimer'.");
 	
 }
 - (void)stopRepeatingTimer {
-	debug(@"Entering 'stopRepeatingTimer'.");
+	DDLogVerbose(@"Entering 'stopRepeatingTimer'.");
     [nextTimer invalidate];
 	[updateIndicatorTimer invalidate];
     nextTimer = nil;
@@ -428,7 +428,7 @@ BOOL fullscreen;
 
 - (void)timerTargetMethod {
     //NSDate *startDate = [[theTimer userInfo] objectForKey:@"StartDate"];
-    //debug(@"Timer started on %@", startDate);
+    //DDLogVerbose(@"Timer started on %@", startDate);
 	
 	//[indicator setIntValue: 0];
 	
@@ -539,9 +539,9 @@ BOOL fullscreen;
     
     [arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop){
         NSString* id = [obj objectForKey:@"mac"];
-        NSLog(@"Object: %@",id);
+        DDLogVerbose(@"Object: %@",id);
         if([id localizedCaseInsensitiveCompare:compare] == NSOrderedSame){
-            NSLog(@"Object Found: %@ at index: %lu",obj, index);
+            DDLogVerbose(@"Object Found: %@ at index: %lu",obj, index);
             *stop=YES;
         }
     } ];
@@ -579,9 +579,9 @@ BOOL fullscreen;
      NSError* error = [[NSError alloc]init ];
      
      if ([myContentArray fetchWithRequest:nil merge:YES error:&error] == NO) {
-     debug(@"Error fetching entries: %@", error.description);
+     DDLogVerbose(@"Error fetching entries: %@", error.description);
      } else {
-     debug(@"Found %lu entries.", [[myContentArray arrangedObjects] count]);
+     DDLogVerbose(@"Found %lu entries.", [[myContentArray arrangedObjects] count]);
      }*/
 }
 
@@ -591,24 +591,24 @@ BOOL fullscreen;
 
 
 - (void)inputPopUpRemoveAllItems {
-	debug(@"Entering 'CommandWindowController.inputPopUpRemoveAllItems'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.inputPopUpRemoveAllItems'.");
 	[inputPopUp removeAllItems];
 }
 
 
 - (void)inputPopUpAddItem:(PYMIDIEndpoint*)input  {
-	debug(@"Entering 'CommandWindowController.inputPopUpAddItem'. %@",[input displayName]);
+	DDLogVerbose(@"Entering 'CommandWindowController.inputPopUpAddItem'. %@",[input displayName]);
 	[inputPopUp addItemWithTitle:[input displayName]];
 	//[[inputPopUp lastItem] setRepresentedObject:input];
 }
 
 
 - (void)inputPopUpAddItems:(NSArray*)items  {
-	debug(@"Entering 'CommandWindowController.inputPopUpAddItems'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.inputPopUpAddItems'.");
 	[inputPopUp removeAllItems];
 	
 	for (NSString *item in items) {
-		debug(@"%@", item);
+		DDLogVerbose(@"%@", item);
 		[inputPopUp addItemWithTitle:item];
 	}
 }
@@ -621,14 +621,14 @@ BOOL fullscreen;
  */
 
 - (IBAction) saveAction:(id)sender {
-	debug(@"Entering 'CommandWindowController.saveAction'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.saveAction'.");
 	
     NSError *error = nil;
     
 	[self saveSettings];
 	
     if (![[self managedObjectContext] commitEditing]) {
-        debug(@"%@:%s unable to commit editing before saving", [self class], _cmd);
+        DDLogVerbose(@"%@:%s unable to commit editing before saving", [self class], _cmd);
     }
 	
     if (![[self managedObjectContext] save:&error]) {
@@ -644,12 +644,12 @@ BOOL fullscreen;
  */
 
 - (NSString *)applicationSupportDirectory {
-	debug(@"Entering 'CommandWindowController.applicationSupportDirectory'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.applicationSupportDirectory'.");
 	
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
 	
-	debug(@"Path: %@",[basePath stringByAppendingPathComponent:@"command"]);
+	DDLogVerbose(@"Path: %@",[basePath stringByAppendingPathComponent:@"command"]);
     return [basePath stringByAppendingPathComponent:@"command"];
 }
 
@@ -659,7 +659,7 @@ BOOL fullscreen;
  */
 
 - (NSManagedObjectModel *)managedObjectModel {
-	debug(@"Entering 'CommandWindowController.managedObjectModel'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.managedObjectModel'.");
 	
     if (managedObjectModel) return managedObjectModel;
 	
@@ -676,14 +676,14 @@ BOOL fullscreen;
  */
 
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
-	debug(@"Entering 'CommandWindowController.persistentStoreCoordinator'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.persistentStoreCoordinator'.");
 	
     if (persistentStoreCoordinator) return persistentStoreCoordinator;
 	
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSAssert(NO, @"Managed object model is nil");
-        debug(@"%@:%s No model to generate a store from", [self class], _cmd);
+        DDLogVerbose(@"%@:%s No model to generate a store from", [self class], _cmd);
         return nil;
     }
 	
@@ -694,7 +694,7 @@ BOOL fullscreen;
     if ( ![fileManager fileExistsAtPath:applicationSupportDirectory isDirectory:NULL] ) {
 		if (![fileManager createDirectoryAtPath:applicationSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error]) {
             NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportDirectory,error]));
-            debug(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
+            DDLogVerbose(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
             return nil;
 		}
     }
@@ -720,7 +720,7 @@ BOOL fullscreen;
  */
 
 - (NSManagedObjectContext *) managedObjectContext {
-	debug(@"Entering 'CommandWindowController.managedObjectContext'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.managedObjectContext'.");
 	
     if (managedObjectContext) return managedObjectContext;
 	
@@ -772,7 +772,7 @@ BOOL fullscreen;
 
 - (void)setNote:(Byte)note forPlayList: (int) number
 {
-	//debug(@"Entering 'CommandWindowController.setNote'.");
+	//DDLogVerbose(@"Entering 'CommandWindowController.setNote'.");
 	
 	switch (number) {
 		case 1:
@@ -810,7 +810,7 @@ BOOL fullscreen;
 }
 
 - (void) processMIDINote: (int) note{
-	debug(@"Entering 'CommandWindowController.processMIDINote'.");
+	DDLogVerbose(@"Entering 'CommandWindowController.processMIDINote'.");
 	
 	
 	if (note == [settingsModel.pl1Note intValue] && currentPL != 1) {

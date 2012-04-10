@@ -18,7 +18,7 @@
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)sender
 {
-	NSLog(@"Entering 'AppDelegate.applicationShouldTerminateAfterLastWindowClosed'.");
+	DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminateAfterLastWindowClosed'.");
 	
 
 	return YES;
@@ -26,7 +26,7 @@
 
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	NSLog(@"Entering 'AppDelegate.applicationShouldTerminate'.");
+	DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminate'.");
 	
 	[cmdWindowController applicationShouldTerminate: sender];
 	//if (![managedObjectContext hasChanges]) return NSTerminateNow;
@@ -34,7 +34,12 @@
 }
 - (void)applicationDidFinishLaunching:(NSNotification*)notification
 {
-	NSLog(@"Entering 'AppDelegate.applicationDidFinishLaunching'.");
+	// Configure logging framework
+	
+	[DDLog addLogger:[DDTTYLogger sharedInstance]];
+	[DDLog addLogger:[DDASLLogger sharedInstance]];
+    
+    DDLogVerbose(@"Entering 'AppDelegate.applicationDidFinishLaunching'.");
 	
 	cmdWindowController = [[CommandWindowController alloc] initWithWindowNibName:@"CommandWindow"];
 	
@@ -60,18 +65,18 @@
 }
 - (void)handleStartScriptCommandSent:(NSNotification *)note
 {
-    debug(@"handleStartScriptCommandSent selector");
+    DDLogVerbose(@"handleStartScriptCommandSent selector");
     [self performSelectorOnMainThread:@selector(mainThread_handleStartScriptCommandSent:) withObject:note waitUntilDone:NO];
 }
 
 - (void)mainThread_handleStartScriptCommandSent:(NSNotification *)note
 {
-    debug(@"mainThread_handleStartScriptCommandSent selector");
+    DDLogVerbose(@"mainThread_handleStartScriptCommandSent selector");
    // [self preVisualization: kPreTime];
     
 }
 - (void)dealloc {
-    debug(@"Entering 'AppDelegate.dealloc'.");
+    DDLogVerbose(@"Entering 'AppDelegate.dealloc'.");
 	/*
     [managedObjectContext_ release];
     [managedObjectModel_ release];
@@ -80,12 +85,12 @@
 }
 - (IBAction)openSettings:(id)sender
 {
-	NSLog(@"Entering 'AppDelegate.openSettings'.");
+	DDLogVerbose(@"Entering 'AppDelegate.openSettings'.");
     [cmdWindowController openSettings: self];
 }
 - (void)updateMIDISources
 {
-	NSLog(@"Entering 'AppDelegate.updateMIDISources'.");
+	DDLogVerbose(@"Entering 'AppDelegate.updateMIDISources'.");
     [midiController updateMIDISources];
 }
 

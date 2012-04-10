@@ -11,7 +11,7 @@
 
 @implementation StartCommand
 - (id)performDefaultImplementation {
-    NSLog(@"StartCommand performDefaultImplementation");
+    DDLogVerbose(@"StartCommand performDefaultImplementation");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"startScriptCommandSent" object:nil userInfo:nil];
 	return [NSNumber numberWithInt:1];
 }

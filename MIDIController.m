@@ -30,13 +30,13 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
 - (MIDIController *) initWithDelegate: (id) delegate {
 	self = [super init];
 	[self setTheDelegate: delegate];
-	NSLog (@"MIDIController.initWithDelegate.");
+	DDLogVerbose (@"MIDIController.initWithDelegate.");
 	
 	return self;
 }
 
 - (void) updateMIDISources{
-	NSLog(@"Entering 'MIDIController.updateMIDISources'.");
+	DDLogVerbose(@"Entering 'MIDIController.updateMIDISources'.");
 	
 	NSArray*		realSources;
 	//NSArray*		names;
@@ -56,7 +56,7 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
 	
     enumerator = [realSources objectEnumerator];
     while (inputDetected = [enumerator nextObject]) {
-		NSLog(@"Detected MIDI source %@", [inputDetected displayName]);
+		DDLogVerbose(@"Detected MIDI source %@", [inputDetected displayName]);
 		//if ([theDelegate respondsToSelector:@selector(inputPopUpAddItem:)])
 			[theDelegate inputPopUpAddItem: inputDetected];
 
@@ -70,7 +70,7 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
 unsigned int
 midiPacketListSize (const MIDIPacketList* packetList)
 {
-	NSLog(@"Entering 'MIDIController.midiPacketListSize'.");
+	//DDLogVerbose(@"Entering 'MIDIController.midiPacketListSize'.");
     const MIDIPacket*	packet;
     int					i;
     
@@ -85,7 +85,7 @@ midiPacketListSize (const MIDIPacketList* packetList)
 unsigned int
 findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 {
-	NSLog(@"Entering 'MIDIController.findEndOfMessage'.");
+	//DDLogVerbose(@"Entering 'MIDIController.findEndOfMessage'.");
     unsigned int i;
     
     // Look for the status byte of the next message, or the end of the packet
@@ -100,7 +100,7 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 
 - (void)processMIDIPacketList:(const MIDIPacketList*)inPacketList sender:(id)sender
 {
-	NSLog(@"Entering 'MIDIController.processMIDIPacketList'.");
+	DDLogVerbose(@"Entering 'MIDIController.processMIDIPacketList'.");
 	
     //NSMutableData*		data;
    // MIDIPacketList*		outPacketList;
@@ -131,7 +131,7 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 				[self processMIDIMessage:(Byte*)&inPacket->data[messageStart]];
 			} 
 			@catch (id theException) {
-				NSLog(@"%@", theException);
+				DDLogVerbose(@"%@", theException);
 			} 
 			
 			
@@ -146,19 +146,19 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 
 - (void)processMIDIMessage:(Byte*)message
 {
-	//NSLog(@"Entering 'MIDIController.processMIDIMessage'.");
+	//DDLogVerbose(@"Entering 'MIDIController.processMIDIMessage'.");
 	//CFRunLoopRef runLoop;
     // If this is a system message we don't touch it
     if (message[0] >= 0xF0){
-		NSLog(@"SYS");
+		DDLogVerbose(@"SYS");
 		return;
 	}
 
     if (message[0] < 0xB0) {
-		NSLog(@"filter notes");
+		DDLogVerbose(@"filter notes");
 		PYMIDIManager* manager = [PYMIDIManager sharedInstance];
 		if(message[1] < 128) {
-			NSLog(@"note %@", [manager nameOfNote:message[1]]);
+			DDLogVerbose(@"note %@", [manager nameOfNote:message[1]]);
 			
 			
 			//[NSThread detachNewThreadSelector:@selector(processMIDINote:) toTarget:theDelegate withObject:(int)message[1]];

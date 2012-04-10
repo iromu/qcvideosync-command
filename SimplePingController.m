@@ -142,7 +142,7 @@ int count = 0;
     assert(pinger == self.pinger);
     assert(address != nil);
     
-    NSLog(@"pinging %@", DisplayAddressForAddress(address));
+    DDLogVerbose(@"pinging %@", DisplayAddressForAddress(address));
     
     // Send the first ping straight away.
     
@@ -161,7 +161,7 @@ int count = 0;
 #pragma unused(pinger)
     assert(pinger == self.pinger);
 #pragma unused(error)
-    NSLog(@"failed: %@", [self _shortErrorFromError:error]);
+    DDLogVerbose(@"failed: %@", [self _shortErrorFromError:error]);
     
     [self.sendTimer invalidate];
     self.sendTimer = nil;
@@ -178,7 +178,7 @@ int count = 0;
 #pragma unused(pinger)
     assert(pinger == self.pinger);
 #pragma unused(packet)
-    NSLog(@"#%u sent", (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *) [packet bytes])->sequenceNumber) );
+    DDLogVerbose(@"#%u sent", (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *) [packet bytes])->sequenceNumber) );
 }
 
 - (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error
@@ -188,7 +188,7 @@ int count = 0;
     assert(pinger == self.pinger);
 #pragma unused(packet)
 #pragma unused(error)
-    NSLog(@"#%u send failed: %@", (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *) [packet bytes])->sequenceNumber), [self _shortErrorFromError:error]);
+    DDLogVerbose(@"#%u send failed: %@", (unsigned int) OSSwapBigToHostInt16(((const ICMPHeader *) [packet bytes])->sequenceNumber), [self _shortErrorFromError:error]);
 }
 
 - (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet
@@ -197,7 +197,7 @@ int count = 0;
 #pragma unused(pinger)
     assert(pinger == self.pinger);
 #pragma unused(packet)
-    NSLog(@"#%u received", (unsigned int) OSSwapBigToHostInt16([SimplePing icmpInPacket:packet]->sequenceNumber) );
+    DDLogVerbose(@"#%u received", (unsigned int) OSSwapBigToHostInt16([SimplePing icmpInPacket:packet]->sequenceNumber) );
 }
 
 - (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet
@@ -211,9 +211,9 @@ int count = 0;
     
     icmpPtr = [SimplePing icmpInPacket:packet];
     if (icmpPtr != NULL) {
-        NSLog(@"#%u unexpected ICMP type=%u, code=%u, identifier=%u", (unsigned int) OSSwapBigToHostInt16(icmpPtr->sequenceNumber), (unsigned int) icmpPtr->type, (unsigned int) icmpPtr->code, (unsigned int) OSSwapBigToHostInt16(icmpPtr->identifier) );
+        DDLogVerbose(@"#%u unexpected ICMP type=%u, code=%u, identifier=%u", (unsigned int) OSSwapBigToHostInt16(icmpPtr->sequenceNumber), (unsigned int) icmpPtr->type, (unsigned int) icmpPtr->code, (unsigned int) OSSwapBigToHostInt16(icmpPtr->identifier) );
     } else {
-        NSLog(@"unexpected packet size=%zu", (size_t) [packet length]);
+        DDLogVerbose(@"unexpected packet size=%zu", (size_t) [packet length]);
     }
 }
 
