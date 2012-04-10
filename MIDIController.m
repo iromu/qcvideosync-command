@@ -8,6 +8,12 @@
 
 #import "MIDIController.h"
 
+// Log levels: off, error, warn, info, verbose
+#ifdef DEBUG
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+static const int ddLogLevel = LOG_LEVEL_INFO;
+#endif
 
 @interface MIDIController (private)
 
@@ -44,7 +50,7 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
     PYMIDIEndpoint*	inputDetected;
 	
 	//if ([theDelegate respondsToSelector:@selector(inputPopUpRemoveAllItems)])
-		[theDelegate inputPopUpRemoveAllItems];
+    [theDelegate inputPopUpRemoveAllItems];
 	
 	//[inputPopUp removeAllItems];
 	
@@ -58,8 +64,8 @@ BOOL isRealtimeByte (Byte b)	{ return b >= 0xF8; }
     while (inputDetected = [enumerator nextObject]) {
 		DDLogVerbose(@"Detected MIDI source %@", [inputDetected displayName]);
 		//if ([theDelegate respondsToSelector:@selector(inputPopUpAddItem:)])
-			[theDelegate inputPopUpAddItem: inputDetected];
-
+        [theDelegate inputPopUpAddItem: inputDetected];
+        
 		input  = inputDetected;
 		[input addReceiver:self];
     }
@@ -103,7 +109,7 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 	DDLogVerbose(@"Entering 'MIDIController.processMIDIPacketList'.");
 	
     //NSMutableData*		data;
-   // MIDIPacketList*		outPacketList;
+    // MIDIPacketList*		outPacketList;
     const MIDIPacket*	inPacket;
     //MIDIPacket*			outPacket;
     int					i, j;
@@ -112,15 +118,15 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
     //int					outMessageLength;
     
 	
-   // data = [NSMutableData dataWithLength:midiPacketListSize (inPacketList)];
+    // data = [NSMutableData dataWithLength:midiPacketListSize (inPacketList)];
     inPacket = &inPacketList->packet[0];
     for (i = 0; i < inPacketList->numPackets; i++) {
         
         // First we skip over any SysEx continuation at the start of the packet
         // and simply copy it to the output packet without changing it.
         for (j = 0; j < inPacket->length && !isStatusByte (inPacket->data[j]); j++) {
-           // if (shouldTransmitClock || !isRealtimeByte (inPacket->data[j]))
-                //outPacket->data[outPacket->length++] = inPacket->data[j];
+            // if (shouldTransmitClock || !isRealtimeByte (inPacket->data[j]))
+            //outPacket->data[outPacket->length++] = inPacket->data[j];
         }
         
         // Now we loop over the remaining MIDI messages in the packet
@@ -140,49 +146,26 @@ findEndOfMessage (const MIDIPacket* packet, unsigned int startIndex)
 		return;
         inPacket = MIDIPacketNext (inPacket);
     }
-
+    
 }
 
 
 - (void)processMIDIMessage:(Byte*)message
 {
-	//DDLogVerbose(@"Entering 'MIDIController.processMIDIMessage'.");
-	//CFRunLoopRef runLoop;
+	DDLogVerbose(@"Entering 'MIDIController.processMIDIMessage'.");
     // If this is a system message we don't touch it
     if (message[0] >= 0xF0){
 		DDLogVerbose(@"SYS");
 		return;
 	}
-
+    
     if (message[0] < 0xB0) {
 		DDLogVerbose(@"filter notes");
-		PYMIDIManager* manager = [PYMIDIManager sharedInstance];
 		if(message[1] < 128) {
+            PYMIDIManager* manager = [PYMIDIManager sharedInstance];
 			DDLogVerbose(@"note %@", [manager nameOfNote:message[1]]);
-			
-			
-			//[NSThread detachNewThreadSelector:@selector(processMIDINote:) toTarget:theDelegate withObject:(int)message[1]];
-			//runLoop = CFRunLoopGetCurrent();
-			/*
-			[runLoop performSelector:@selector(processMIDINote:) 
-							  target:theDelegate argument:(int)message[1] order:0 
-							   modes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
-	
-			*/
-			/*
-			 [NSTimer scheduledTimerWithTimeInterval:1.0f
-											 target:theDelegate selector:@selector(processMIDINote:)
-										   userInfo:nil repeats:NO];
-			
-			*/
-			//NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-			
-			[theDelegate processMIDINote: (int)message[1]];
-			
-			//[pool release];
+            [theDelegate processMIDINote: (int)message[1]];
 		}
-		
-        
     }
     return;
 }

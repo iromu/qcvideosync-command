@@ -10,9 +10,18 @@
 #import "SimplePingController.h"
 #import "GCDAsyncSocket.h"
 
+// Log levels: off, error, warn, info, verbose
+#ifdef DEBUG
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#endif
+
 @interface SocketController (PrivateAPI)
+-(void) ping: (GCDAsyncSocket* )sock;
 - (BOOL) acceptOnPortString:(NSString *)str;
 -(NSString*) getPeerName:(GCDAsyncSocket *)sock;
+-(NSString*) getHostName:(GCDAsyncSocket *)sock;
 @end
 
 @implementation SocketController
@@ -23,6 +32,9 @@
 -(id) initWithDelegate: (id<SocketControllerDelegate>) delegate {
 	self = [super init];
 	[self setTheDelegate: delegate];
+    
+
+    
     
     pingController = [[SimplePingController alloc]init];
 	DDLogVerbose (@"SocketController.initWithDelegate :: Creating Server socket.");
@@ -102,7 +114,7 @@
 		// If you get a generic CFSocket error, you probably tried to use a port
 		// number reserved by the operating system.
 		
-		DDLogVerbose (@"Cannot accept connections on port %u. Error domain %@ code %ld (%@). Exiting.", port, [err domain], [err code], [err localizedDescription]);
+		DDLogError (@"Cannot accept connections on port %u. Error domain %@ code %ld (%@). Exiting.", port, [err domain], [err code], [err localizedDescription]);
 		return NO;
 		//exit(1);
 	}
@@ -112,7 +124,7 @@
 - (void)netServiceDidPublish:(NSNetService *)ns
 {
 	DDLogVerbose(@"Bonjour Service Published: domain(%@) type(%@) name(%@) port(%i)",
-          [ns domain], [ns type], [ns name], (int)[ns port]);
+                 [ns domain], [ns type], [ns name], (int)[ns port]);
 }
 
 - (void)netService:(NSNetService *)ns didNotPublish:(NSDictionary *)errorDict
@@ -122,64 +134,44 @@
 	// Note: This method in invoked on our bonjour thread.
 	
 	DDLogVerbose(@"Failed to Publish Service: domain(%@) type(%@) name(%@) - %@",
-          [ns domain], [ns type], [ns name], errorDict);
+                 [ns domain], [ns type], [ns name], errorDict);
 }
 #pragma mark GCDAsyncSocketDelegate
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket;
 {
-	DDLogVerbose(@"Entering 'onSocket.didAcceptNewSocket'.");
-	//[newSocket retain];
-	[connectedSockets addObject:newSocket];
-	
+    NSString* peer = [self getPeerName: newSocket];
+	DDLogError(@"socket: %@ didAcceptNewSocket: %@", [self getHostName: sock], peer);
+	[connectedSockets addObject:newSocket];	
 	
 	if ([theDelegate respondsToSelector:@selector(updateConnectedSockets:)])
 		[theDelegate updateConnectedSockets: [connectedSockets count]];	
-	//[connCounter setStringValue: FORMAT(@"%hu", [connectedSockets count])];
-	
-}
-
-
-- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
-{
-	DDLogVerbose(@"Entering 'onSocket.didConnectToHost'.");
+    
+    DDLogInfo(@"Accepted client %@", peer);
 	NSString * welcomeMsg=nil;//= @"Welcome to the Video Server\r\n";
-	if ([theDelegate respondsToSelector:@selector(didConnectToHost:port:)])
-		welcomeMsg = [theDelegate didConnectToHost: host port: port];	
-	
-	DDLogVerbose(@"Accepted client %@:%hu", host, port);
-	
-	
-	//NSString *welcomeMsg = @"Welcome to the Video Server\r\n";
-	//NSData *welcomeData = [welcomeMsg dataUsingEncoding:NSUTF8StringEncoding];
+	if ([theDelegate respondsToSelector:@selector(didAcceptNewPeer:)])
+		welcomeMsg = [theDelegate didAcceptNewPeer: peer];	
 	
 	if (welcomeMsg) {
 		NSString *msg = [NSString stringWithFormat:@"CMD %@\r\n", welcomeMsg];
 		NSData *welcomeData = [msg dataUsingEncoding:NSUTF8StringEncoding];
-		[sock writeData:welcomeData withTimeout:NO_TIMEOUT tag:WELCOME_MSG];
+		[newSocket writeData:welcomeData withTimeout:NO_TIMEOUT tag:WELCOME_MSG];
 	}
     
-    double CurrentTime = [[NSDate date] timeIntervalSince1970];
-    NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
-    NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
-	[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
-	
-	[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
-    // NSData * hostAddress = [[NSData alloc]init] ;        
-    //[pingController runWithHostAddress:hostAddress];
-    //pingController.pinger = nil;
-    //pingController.sendTimer = nil;
-    //[pingController runWithHostName:host];
     
+	
+	[newSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];	
+    
+    [self ping: newSocket];
 }
 
 
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag;
 {
-	//if(tag == ECHO_MSG)
-	//{
-	//[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
-	//}
+	if(tag == TICK_MSG)
+	{
+	[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
+	}
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag;
@@ -201,12 +193,22 @@
             NSString* peer = [self getPeerName:sock];
             DDLogVerbose(@"lag: %f ms from %@", lag, peer);
             if ([theDelegate respondsToSelector:@selector(updatePeer:withLag:)])
-               [theDelegate updatePeer: peer withLag: lag];
+                [theDelegate updatePeer: peer withLag: lag];
+            
+           // double CurrentTime = [[NSDate date] timeIntervalSince1970];
+           // NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
+            //NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
+            //[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
+            //[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
+            [self ping:sock];
+        }
+        else {
+            DDLogError(@"Unknow response from peer");
         }
     }
     else
     {
-        DDLogVerbose(@"Error converting received data into UTF-8 String");
+        DDLogError(@"Error converting received data into UTF-8 String");
         
     }
 	
@@ -260,11 +262,27 @@
 }
 
 #pragma mark -
+
+#pragma mark PrivateAPI
+-(void) ping: (GCDAsyncSocket* )sock
+{
+    double CurrentTime = [[NSDate date] timeIntervalSince1970];
+    NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
+    NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
+	[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
+}
+
 -(NSString*) getPeerName:(GCDAsyncSocket *)sock
 {	
     return [NSString stringWithFormat: @"%@:%u",
-               [sock connectedHost],
-               [sock connectedPort]];
+            [sock connectedHost],
+            [sock connectedPort]];
 }
-
+-(NSString*) getHostName:(GCDAsyncSocket *)sock
+{	
+    return [NSString stringWithFormat: @"%@:%u",
+            [sock localHost],
+            [sock localPort]];
+}
+#pragma mark -
 @end

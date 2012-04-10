@@ -8,6 +8,12 @@
 
 #import "StartCommand.h"
 
+// Log levels: off, error, warn, info, verbose
+#ifdef DEBUG
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+static const int ddLogLevel = LOG_LEVEL_INFO;
+#endif
 
 @implementation StartCommand
 - (id)performDefaultImplementation {

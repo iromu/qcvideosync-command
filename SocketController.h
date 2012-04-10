@@ -17,7 +17,7 @@
 -(void) didConnectToHost;
 -(void) didDisconnectFromHost;
 - (void)updateConnectedSockets:(NSUInteger)connectedSockets;
-- (NSString *)didConnectToHost:(NSString *)host port:(UInt16)port;
+- (NSString *)didAcceptNewPeer:(NSString *)peer;
 - (void)onSocketwillDisconnectWithError:(NSString *)host port:(UInt16)port;
 -(void)updatePeer:(NSString *) peer withLag: (double) lag;
 @end

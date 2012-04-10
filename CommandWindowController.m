@@ -10,6 +10,13 @@
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 
+// Log levels: off, error, warn, info, verbose
+#ifdef DEBUG
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+static const int ddLogLevel = LOG_LEVEL_INFO;
+#endif
+
 #define kUse_Bindings_By_Code	1
 
 @interface CommandWindowController (PrivateAPI)
@@ -107,6 +114,8 @@ BOOL fullscreen;
 
 - (void)awakeFromNib
 {
+
+    
 	DDLogVerbose(@"Entering 'CommandWindowController.awakeFromNib'.");
 	
 	[self loadSettings];
@@ -440,7 +449,7 @@ BOOL fullscreen;
 	NSString *command = [NSString stringWithFormat:@"NEXT %hu",nextIndex++];
 	
 	[theDelegate.listenSocket broadcastCommand:command];
-	[self logMessage: FORMAT(@"Server sent %@", command)];
+	//[self logMessage: FORMAT(@"Server sent %@", command)];
 	[indicator setIntValue: 0];
 	self.start = mach_absolute_time();
 	
@@ -526,34 +535,19 @@ BOOL fullscreen;
 	
 }
 
-- (NSString *)didConnectToHost:(NSString *)host port:(UInt16)port{
-	[self logInfo:FORMAT(@"Accepted client %@:%hu", host, port)];
+- (NSString *)didAcceptNewPeer:(NSString *)peer;
+{
+	[self logInfo:FORMAT(@"Accepted client %@", peer)];
     
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 FORMAT(@"%@:%hu", host, port), @"mac",
-                                 @"0ms", @"delay",
-                                 nil];
-    NSArray * arrangedObjects = myContentArray.arrangedObjects;
-    
-    NSString* compare = FORMAT(@"%@:%hu", host, port);
-    
-    [arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop){
-        NSString* id = [obj objectForKey:@"mac"];
-        DDLogVerbose(@"Object: %@",id);
-        if([id localizedCaseInsensitiveCompare:compare] == NSOrderedSame){
-            DDLogVerbose(@"Object Found: %@ at index: %lu",obj, index);
-            *stop=YES;
-        }
-    } ];
-    
-	[myContentArray addObject: dict];
-    
+
+    [self updatePeer:peer withLag:0];
     
 	if(self.nextTimer){
 		uint64_t elapsed =  mach_absolute_time()-self.start;
 		Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
 		NSString *command = [NSString stringWithFormat:@"PL %hu NEXT %hu CT %llu",currentPL,nextIndex-1, * (uint64_t *)&elapsedNano];
-		[self logMessage: FORMAT(@"Server sent %@ to client %@:%hu", command, host, port)];
+		[self logMessage: FORMAT(@"Server sent %@ to client %@", command, peer)];
+       // DDLogVerbose(@"Server sent %@ to client %@", peer);
 		return command;
 	}
 	else 
@@ -563,8 +557,22 @@ BOOL fullscreen;
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  peer, @"mac",
-                                 FORMAT(@"%f ms",lag), @"delay",
+                                 FORMAT(@"%f ms", lag), @"delay",
                                  nil];
+    NSArray * arrangedObjects = myContentArray.arrangedObjects;
+    
+    __block NSInteger idx=-1;
+    [arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop){
+        NSString* key = [obj objectForKey:@"mac"];
+       // DDLogVerbose(@"Object: %@",id);
+        if([key localizedCaseInsensitiveCompare:peer] == NSOrderedSame){
+           // DDLogVerbose(@"Object Found: %@ at index: %lu",obj, index);
+            idx=index;
+            *stop=YES;
+        }
+    } ];
+    if(idx!=-1)
+        [myContentArray removeObjectAtArrangedObjectIndex:idx];
 	[myContentArray addObject: dict];
 }
 - (void)onSocketwillDisconnectWithError:(NSString *)host port:(UInt16)port{
