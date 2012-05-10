@@ -95,6 +95,8 @@
 
 - (IBAction) toggleFullScreenCheck:(id)sender;
 
+- (IBAction) ping:(id)sender;
+
 - (IBAction)saveAction:sender;
 
 - (void) settingsPanelDidEnd:(NSWindow*)sheet returnCode:(int)returnCode contextInfo:(void*)contextInfo;

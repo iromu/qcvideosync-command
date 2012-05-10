@@ -6,10 +6,11 @@
  *  Copyright 2010 Ivan Rodriguez Murillo. All rights reserved.
  *
  */
-#define WELCOME_MSG  0
-#define ECHO_MSG     1
-#define WARNING_MSG  2
-#define TICK_MSG     3
+#define WELCOME_MSG 0
+#define ECHO_MSG    1
+#define WARNING_MSG 2
+#define TICK_MSG    3
+#define CMD_MSG     4
 
 
 #define NO_TIMEOUT -1

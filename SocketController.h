@@ -41,5 +41,6 @@
 -(BOOL) startServer: (NSString *) port;
 -(void) stopServer;
 - (void)broadcastCommand:(NSString *) cmd;
+- (void)ping;
 @end
 

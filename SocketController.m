@@ -14,7 +14,7 @@
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+static const int ddLogLevel = LOG_LEVEL_INFO;
 #endif
 
 @interface SocketController (PrivateAPI)
@@ -33,7 +33,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 	self = [super init];
 	[self setTheDelegate: delegate];
     
-
+    
     
     
     pingController = [[SimplePingController alloc]init];
@@ -83,6 +83,17 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 		NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
 		for (GCDAsyncSocket *sock in connectedSockets) {
 			[sock writeData:msgData withTimeout:NO_TIMEOUT tag:ECHO_MSG];
+		}
+	}
+}
+
+
+- (void)ping
+{
+	
+	if ([connectedSockets count]>0) {
+		for (GCDAsyncSocket *sock in connectedSockets) {
+			[self ping: sock];
 		}
 	}
 }
@@ -140,7 +151,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket;
 {
     NSString* peer = [self getPeerName: newSocket];
-	DDLogError(@"socket: %@ didAcceptNewSocket: %@", [self getHostName: sock], peer);
+	DDLogVerbose(@"socket: %@ didAcceptNewSocket: %@", [self getHostName: sock], peer);
 	[connectedSockets addObject:newSocket];	
 	
 	if ([theDelegate respondsToSelector:@selector(updateConnectedSockets:)])
@@ -170,7 +181,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 {
 	if(tag == TICK_MSG)
 	{
-	[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
+        [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
 	}
 }
 
@@ -187,7 +198,9 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     {
         //[self logMessage:msg];
         //DDLogVerbose(@"%@ from %@", str,sock);
-        if([str hasPrefix: @"Tick "]){
+        // if([str hasPrefix: @"Tick "])
+        if(tag == TICK_MSG)
+        {
             double CurrentTime = [[NSDate date] timeIntervalSince1970];
             double lag = (CurrentTime - [[str substringFromIndex:5] doubleValue] ) * 1000.00;
             NSString* peer = [self getPeerName:sock];
@@ -195,12 +208,12 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
             if ([theDelegate respondsToSelector:@selector(updatePeer:withLag:)])
                 [theDelegate updatePeer: peer withLag: lag];
             
-           // double CurrentTime = [[NSDate date] timeIntervalSince1970];
-           // NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
+            // double CurrentTime = [[NSDate date] timeIntervalSince1970];
+            // NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
             //NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
             //[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
             //[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
-            [self ping:sock];
+            // [self ping:sock];
         }
         else {
             DDLogError(@"Unknow response from peer");
@@ -242,6 +255,11 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 		[theDelegate onSocketwillDisconnectWithError: [sock connectedHost] port: [sock connectedPort]];
 	//[self logInfo:FORMAT(@"Client Disconnected: %@:%hu", [sock connectedHost], [sock connectedPort])];
 	
+}
+
+- (void)socketDidCloseReadStream:(GCDAsyncSocket *)sock
+{
+    DDLogVerbose(@"Entering 'onSocket.socketDidCloseReadStream'.");
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err

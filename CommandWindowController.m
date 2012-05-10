@@ -350,6 +350,13 @@ BOOL fullscreen;
 	[fullScreenCheck setIntValue:toggle];
 	
 }
+
+- (IBAction) ping:(id)sender
+{
+    //[myContentArray.arrangedObjects removeAllObjects];
+	[theDelegate.listenSocket ping];
+}
+
 - (IBAction)settingsPanelButtonPressed:(id)sender
 {
 	DDLogVerbose(@"Entering 'CommandWindowController.settingsPanelButtonPressed'.");
