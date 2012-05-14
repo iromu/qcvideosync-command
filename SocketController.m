@@ -9,6 +9,9 @@
 #import "SocketController.h"
 #import "SimplePingController.h"
 #import "GCDAsyncSocket.h"
+#import "common.h"
+#include <mach/mach.h>
+#include <mach/mach_time.h>
 
 // Log levels: off, error, warn, info, verbose
 #ifdef DEBUG
@@ -184,11 +187,28 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
         [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
 	}
 }
-
+//Raw mach_absolute_times going in, difference in seconds out
+double subtractTimes( uint64_t endTime, uint64_t startTime )
+{
+    uint64_t difference = endTime - startTime;
+    static double conversion = 0.0;
+    
+    if( conversion == 0.0 )
+    {
+        mach_timebase_info_data_t info;
+        kern_return_t err = mach_timebase_info( &info );
+        
+        //Convert the timebase into seconds
+        if( err == 0  )
+            conversion = 1e-9 * (double) info.numer / (double) info.denom;
+    }
+    
+    return conversion * (double) difference;
+}
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag;
 {
-	DDLogVerbose(@"Entering 'onSocket.didReadData'.");
-    
+	//DDLogVerbose(@"Entering 'onSocket.didReadData'.");
+    uint64_t stop = mach_absolute_time();
 	//NSData *strData = [data subdataWithRange:NSMakeRange(0, [data length] - 2)];
     //	NSString *msg = [[[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding] autorelease];
 	NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -198,13 +218,30 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
     {
         //[self logMessage:msg];
         //DDLogVerbose(@"%@ from %@", str,sock);
-        // if([str hasPrefix: @"Tick "])
-        if(tag == TICK_MSG)
+        if([str hasPrefix: @"Tick "])
+        //if(tag == TICK_MSG)
         {
-            double CurrentTime = [[NSDate date] timeIntervalSince1970];
-            double lag = (CurrentTime - [[str substringFromIndex:5] doubleValue] ) * 1000.00;
+            
+         
+            
+            //uint64_t CurrentTime =  mach_absolute_time();
+            //Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &CurrentTime );
+            //NSString *command = [NSString stringWithFormat:@"PL %hu NEXT %hu CT %llu",currentPL,nextIndex-1, * (uint64_t *)&elapsedNano];
+            
+            //double CurrentTime = [[NSDate date] timeIntervalSince1970];
+            //double lag = (CurrentTime - [[str substringFromIndex:5] doubleValue] ) * 1000.00;
+            NSString* startS = [str substringFromIndex:5];
+            //NSNumberFormatter * myNumFormatter = [[NSNumberFormatter alloc] init];
+            //NSNumber* startN=[myNumFormatter numberFromString:startS];
+            
+            uint64_t start = strtoull([startS UTF8String], NULL, 0);
+               double lag = subtractTimes(stop,start) * 1000.0;
+           // uint64_t delta = (* (uint64_t *)&elapsedNano) - ullvalue;
+           // double lag = (double)(delta/1000000.0);
+            
+            
             NSString* peer = [self getPeerName:sock];
-            DDLogVerbose(@"lag: %f ms from %@", lag, peer);
+            //DDLogVerbose(@"lag: %f ms from %@", lag, peer);
             if ([theDelegate respondsToSelector:@selector(updatePeer:withLag:)])
                 [theDelegate updatePeer: peer withLag: lag];
             
@@ -284,8 +321,15 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 #pragma mark PrivateAPI
 -(void) ping: (GCDAsyncSocket* )sock
 {
-    double CurrentTime = [[NSDate date] timeIntervalSince1970];
-    NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
+    //double CurrentTime = [[NSDate date] timeIntervalSince1970];
+    //NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
+    
+    //uint64_t CurrentTime =  mach_absolute_time();
+    //Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &CurrentTime );
+    uint64_t start = mach_absolute_time();
+    NSString *tick = FORMAT(@"Tick %llu\r\n",start);// * (uint64_t *)&elapsedNano);
+
+    
     NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
 	[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
 }

@@ -158,7 +158,7 @@ BOOL fullscreen;
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	DDLogVerbose(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+	//DDLogVerbose(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
 }
 -(void)loadSettings{
 	DDLogVerbose(@"Entering 'loadSettings'.");
@@ -562,7 +562,15 @@ BOOL fullscreen;
 }
 -(void)updatePeer:(NSString *) peer withLag: (double) lag
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+    [self performSelectorOnMainThread:@selector(mainThread_updatePeer:) withObject:[NSArray arrayWithObjects:peer,[NSNumber numberWithDouble:lag], nil] waitUntilDone:NO];
+
+}
+
+    -(void)mainThread_updatePeer:(NSArray *)note
+    {
+        NSString * peer = [note objectAtIndex:0];
+        double lag  = [((NSNumber *) [note objectAtIndex:1]) doubleValue];
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  peer, @"mac",
                                  FORMAT(@"%f ms", lag), @"delay",
                                  nil];

@@ -116,4 +116,5 @@
 - (IBAction)pl3NoteStepperChanged:(id)sender;
 - (void) processMIDINote: (int) note;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
+-(void)mainThread_updatePeer:(NSArray *)note;
 @end
