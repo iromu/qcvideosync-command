@@ -22,6 +22,7 @@
 		B5E96255122673A9002A7EDB /* settings_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E96254122673A9002A7EDB /* settings_32.png */; };
 		B5E9626912267541002A7EDB /* paly_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626712267541002A7EDB /* paly_32.png */; };
 		B5E9626A12267541002A7EDB /* stop_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626812267541002A7EDB /* stop_32.png */; };
+		D916731F156166A6007A5632 /* PYMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D97EEEEA15334AEB006F2DF8 /* PYMIDI.framework */; };
 		D9417A7A15334B8C0093EE15 /* PYMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D97EEEEA15334AEB006F2DF8 /* PYMIDI.framework */; };
 		D95B82AB1531DC6B00D9C0E1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95B82AA1531DC6B00D9C0E1 /* Security.framework */; };
 		D9863B5315341B920043C141 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B4915341B920043C141 /* DDAbstractDatabaseLogger.m */; };
@@ -57,12 +58,13 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		D97EEEE215334951006F2DF8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D916731F156166A6007A5632 /* PYMIDI.framework in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
