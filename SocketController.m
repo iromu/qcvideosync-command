@@ -161,7 +161,7 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
     
 	[newSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];	
     
-    [self ping: newSocket];
+    //[self ping: newSocket];
 }
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag;
 {
@@ -197,7 +197,7 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
         if([str hasPrefix: @"Tick "])  {
             NSString* startS = [str substringFromIndex:5];
             uint64_t start = strtoull([startS UTF8String], NULL, 0);
-            double lag = subtractTimes(stop,start) * 1000.0;
+            double lag = subtractTimes(stop,start) * 1000.0 / 2;
             
             NSString* peer = [self getPeerName:sock];
             if ([theDelegate respondsToSelector:@selector(updatePeer:withLag:)])

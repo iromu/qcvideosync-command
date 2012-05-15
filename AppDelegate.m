@@ -82,14 +82,6 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
    // [self preVisualization: kPreTime];
     
 }
-- (void)dealloc {
-    DDLogVerbose(@"Entering 'AppDelegate.dealloc'.");
-	/*
-    [managedObjectContext_ release];
-    [managedObjectModel_ release];
-    [persistentStoreCoordinator_ release];
-    */
-}
 - (IBAction)openSettings:(id)sender
 {
 	DDLogVerbose(@"Entering 'AppDelegate.openSettings'.");

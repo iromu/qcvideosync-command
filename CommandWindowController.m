@@ -49,17 +49,6 @@ BOOL fullscreen;
     return [super initWithWindowNibName:@"CommandWindow"];
 }
 
-
-/**
- Implementation of dealloc, to release the retained variables.
- */
-
-- (void)dealloc {
-	DDLogVerbose(@"Entering 'CommandWindowController.dealloc'.");
-	
-	
-}
-
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
 	DDLogVerbose(@"Entering 'CommandWindowController.applicationShouldTerminate'.");
 	
@@ -114,7 +103,7 @@ BOOL fullscreen;
 
 - (void)awakeFromNib
 {
-
+    
     
 	DDLogVerbose(@"Entering 'CommandWindowController.awakeFromNib'.");
 	
@@ -532,9 +521,9 @@ BOOL fullscreen;
 		//green
 		[connCounter setTextColor: NSColor.greenColor];
 		
-		if (nextTimer == nil) {
+		/*if (nextTimer == nil) {
 			[self sendStartCommand: nil];
-		}
+		}*/
 	}
 	
 	
@@ -546,7 +535,7 @@ BOOL fullscreen;
 {
 	[self logInfo:FORMAT(@"Accepted client %@", peer)];
     
-
+    
     [self updatePeer:peer withLag:0];
     
 	if(self.nextTimer){
@@ -554,7 +543,7 @@ BOOL fullscreen;
 		Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
 		NSString *command = [NSString stringWithFormat:@"PL %hu NEXT %hu CT %llu",currentPL,nextIndex-1, * (uint64_t *)&elapsedNano];
 		[self logMessage: FORMAT(@"Server sent %@ to client %@", command, peer)];
-       // DDLogVerbose(@"Server sent %@ to client %@", peer);
+        // DDLogVerbose(@"Server sent %@ to client %@", peer);
 		return command;
 	}
 	else 
@@ -563,14 +552,14 @@ BOOL fullscreen;
 -(void)updatePeer:(NSString *) peer withLag: (double) lag
 {
     [self performSelectorOnMainThread:@selector(mainThread_updatePeer:) withObject:[NSArray arrayWithObjects:peer,[NSNumber numberWithDouble:lag], nil] waitUntilDone:NO];
-
+    
 }
 
-    -(void)mainThread_updatePeer:(NSArray *)note
-    {
-        NSString * peer = [note objectAtIndex:0];
-        double lag  = [((NSNumber *) [note objectAtIndex:1]) doubleValue];
-        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+-(void)mainThread_updatePeer:(NSArray *)note
+{
+    NSString * peer = [note objectAtIndex:0];
+    double lag  = [((NSNumber *) [note objectAtIndex:1]) doubleValue];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  peer, @"mac",
                                  FORMAT(@"%f ms", lag), @"delay",
                                  nil];
@@ -579,9 +568,9 @@ BOOL fullscreen;
     __block NSInteger idx=-1;
     [arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop){
         NSString* key = [obj objectForKey:@"mac"];
-       // DDLogVerbose(@"Object: %@",id);
+        // DDLogVerbose(@"Object: %@",id);
         if([key localizedCaseInsensitiveCompare:peer] == NSOrderedSame){
-           // DDLogVerbose(@"Object Found: %@ at index: %lu",obj, index);
+            // DDLogVerbose(@"Object Found: %@ at index: %lu",obj, index);
             idx=index;
             *stop=YES;
         }
