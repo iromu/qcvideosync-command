@@ -10,6 +10,6 @@
 #import "SocketController.h"
 
 @protocol CommandWindowControllerDelegate
--(SocketController*)	listenSocket;
+- (SocketController *)    listenSocket;
 - (void) updateMIDISources;
 @end

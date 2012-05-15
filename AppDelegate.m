@@ -23,73 +23,82 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 #pragma mark Application lifecycle
 
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)sender
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
-	DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminateAfterLastWindowClosed'.");
-	
+    DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminateAfterLastWindowClosed'.");
 
-	return YES;
+
+    return YES;
 }
 
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminate'.");
-	
-	[cmdWindowController applicationShouldTerminate: sender];
-	//if (![managedObjectContext hasChanges]) return NSTerminateNow;
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    DDLogVerbose(@"Entering 'AppDelegate.applicationShouldTerminate'.");
+
+    [cmdWindowController applicationShouldTerminate:sender];
+    //if (![managedObjectContext hasChanges]) return NSTerminateNow;
     return NSTerminateNow;
 }
-- (void)applicationDidFinishLaunching:(NSNotification*)notification
+
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-	// Configure logging framework
-	
-	[DDLog addLogger:[DDTTYLogger sharedInstance]];
-	[DDLog addLogger:[DDASLLogger sharedInstance]];
-    
+    // Configure logging framework
+
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+
     DDLogVerbose(@"Entering 'AppDelegate.applicationDidFinishLaunching'.");
-	
-	cmdWindowController = [[CommandWindowController alloc] initWithWindowNibName:@"CommandWindow"];
-	
-	cmdWindowController.theDelegate = self;
-	
-	midiController = [[MIDIController alloc] initWithDelegate: cmdWindowController];
-	[midiController updateMIDISources];
-	
-	//[inputPopUp addItemWithTitle:[input displayName]];
-	
-	listenSocket = [[SocketController alloc] initWithDelegate: cmdWindowController];
-    
-    
-	
-	[cmdWindowController showWindow:self];
-	
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(handleStartScriptCommandSent:) 
+
+    cmdWindowController = [[CommandWindowController alloc] initWithWindowNibName:@"CommandWindow"];
+
+    cmdWindowController.theDelegate = self;
+
+    midiController = [[MIDIController alloc] initWithDelegate:cmdWindowController];
+    [midiController updateMIDISources];
+
+    //[inputPopUp addItemWithTitle:[input displayName]];
+
+    listenSocket = [[SocketController alloc] initWithDelegate:cmdWindowController];
+
+
+
+    [cmdWindowController showWindow:self];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleStartScriptCommandSent:)
                                                  name:@"startScriptCommandSent" object:nil];
-    
-    
-	//[self managedObjectContext ];
+
+
+    //[self managedObjectContext ];
 }
+
+
 - (void)handleStartScriptCommandSent:(NSNotification *)note
 {
     DDLogVerbose(@"handleStartScriptCommandSent selector");
     [self performSelectorOnMainThread:@selector(mainThread_handleStartScriptCommandSent:) withObject:note waitUntilDone:NO];
 }
 
+
 - (void)mainThread_handleStartScriptCommandSent:(NSNotification *)note
 {
     DDLogVerbose(@"mainThread_handleStartScriptCommandSent selector");
-   // [self preVisualization: kPreTime];
-    
+    // [self preVisualization: kPreTime];
 }
+
+
 - (IBAction)openSettings:(id)sender
 {
-	DDLogVerbose(@"Entering 'AppDelegate.openSettings'.");
-    [cmdWindowController openSettings: self];
+    DDLogVerbose(@"Entering 'AppDelegate.openSettings'.");
+    [cmdWindowController openSettings:self];
 }
+
+
 - (void)updateMIDISources
 {
-	DDLogVerbose(@"Entering 'AppDelegate.updateMIDISources'.");
+    DDLogVerbose(@"Entering 'AppDelegate.updateMIDISources'.");
     [midiController updateMIDISources];
 }
 

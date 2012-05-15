@@ -27,12 +27,12 @@
 {
     NSString *              _hostName;
     NSData *                _hostAddress;
-    CFHostRef               _host;
-    CFSocketRef             _socket;
-    
+    CFHostRef _host;
+    CFSocketRef _socket;
+
     id<SimplePingDelegate>  __unsafe_unretained _delegate;
-    uint16_t                _identifier;                            // host byte order
-    uint16_t                _nextSequenceNumber;                    // host byte order
+    uint16_t _identifier;                                           // host byte order
+    uint16_t _nextSequenceNumber;                                   // host byte order
 }
 
 + (SimplePing *)simplePingWithHostName:(NSString *)hostName;        // chooses first IPv4 address
@@ -40,29 +40,29 @@
 
 @property (nonatomic, unsafe_unretained, readwrite) id<SimplePingDelegate> delegate;
 
-@property (nonatomic, copy,   readonly)  NSString *             hostName;
-@property (nonatomic, copy,   readonly)  NSData *               hostAddress;
-@property (nonatomic, assign, readonly)  uint16_t               identifier;
-@property (nonatomic, assign, readonly)  uint16_t               nextSequenceNumber;
+@property (nonatomic, copy, readonly)  NSString *             hostName;
+@property (nonatomic, copy, readonly)  NSData *               hostAddress;
+@property (nonatomic, assign, readonly)  uint16_t identifier;
+@property (nonatomic, assign, readonly)  uint16_t nextSequenceNumber;
 
 - (void)start;
-// Starts the pinger object pinging.  You should call this after 
+// Starts the pinger object pinging.  You should call this after
 // you've setup the delegate and any ping parameters.
 
 - (void)sendPingWithData:(NSData *)data;
-// Sends an actual ping.  Pass nil for data to use a standard 56 byte payload (resulting in a 
-// standard 64 byte ping).  Otherwise pass a non-nil value and it will be appended to the 
+// Sends an actual ping.  Pass nil for data to use a standard 56 byte payload (resulting in a
+// standard 64 byte ping).  Otherwise pass a non-nil value and it will be appended to the
 // ICMP header.
 //
-// Do not try to send a ping before you receive the -simplePing:didStartWithAddress: delegate 
+// Do not try to send a ping before you receive the -simplePing:didStartWithAddress: delegate
 // callback.
 
 - (void)stop;
-// Stops the pinger object.  You should call this when you're done 
+// Stops the pinger object.  You should call this when you're done
 // pinging.
 
 + (const struct ICMPHeader *)icmpInPacket:(NSData *)packet;
-// Given a valid IP packet contains an ICMP , returns the address of the ICMP header that 
+// Given a valid IP packet contains an ICMP , returns the address of the ICMP header that
 // follows the IP header.  This doesn't do any significant validation of the packet.
 
 @end
@@ -72,31 +72,31 @@
 @optional
 
 - (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address;
-// Called after the SimplePing has successfully started up.  After this callback, you 
+// Called after the SimplePing has successfully started up.  After this callback, you
 // can start sending pings via -sendPingWithData:
 
 - (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error;
-// If this is called, the SimplePing object has failed.  By the time this callback is 
+// If this is called, the SimplePing object has failed.  By the time this callback is
 // called, the object has stopped (that is, you don't need to call -stop yourself).
 
-// IMPORTANT: On the send side the packet does not include an IP header. 
-// On the receive side, it does.  In that case, use +[SimplePing icmpInPacket:] 
+// IMPORTANT: On the send side the packet does not include an IP header.
+// On the receive side, it does.  In that case, use +[SimplePing icmpInPacket:]
 // to find the ICMP header within the packet.
 
 - (void)simplePing:(SimplePing *)pinger didSendPacket:(NSData *)packet;
-// Called whenever the SimplePing object has successfully sent a ping packet. 
+// Called whenever the SimplePing object has successfully sent a ping packet.
 
 - (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error;
 // Called whenever the SimplePing object tries and fails to send a ping packet.
 
 - (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet;
-// Called whenever the SimplePing object receives an ICMP packet that looks like 
-// a response to one of our pings (that is, has a valid ICMP checksum, has 
-// an identifier that matches our identifier, and has a sequence number in 
+// Called whenever the SimplePing object receives an ICMP packet that looks like
+// a response to one of our pings (that is, has a valid ICMP checksum, has
+// an identifier that matches our identifier, and has a sequence number in
 // the range of sequence numbers that we've sent out).
 
 - (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
-// Called whenever the SimplePing object receives an ICMP packet that does not 
+// Called whenever the SimplePing object receives an ICMP packet that does not
 // look like a response to one of our pings.
 
 @end
@@ -108,16 +108,16 @@
 // IP header structure:
 
 struct IPHeader {
-    uint8_t     versionAndHeaderLength;
-    uint8_t     differentiatedServices;
-    uint16_t    totalLength;
-    uint16_t    identification;
-    uint16_t    flagsAndFragmentOffset;
-    uint8_t     timeToLive;
-    uint8_t     protocol;
-    uint16_t    headerChecksum;
-    uint8_t     sourceAddress[4];
-    uint8_t     destinationAddress[4];
+    uint8_t versionAndHeaderLength;
+    uint8_t differentiatedServices;
+    uint16_t totalLength;
+    uint16_t identification;
+    uint16_t flagsAndFragmentOffset;
+    uint8_t timeToLive;
+    uint8_t protocol;
+    uint16_t headerChecksum;
+    uint8_t sourceAddress[4];
+    uint8_t destinationAddress[4];
     // options...
     // data...
 };
@@ -145,11 +145,11 @@ enum {
 // ICMP header structure:
 
 struct ICMPHeader {
-    uint8_t     type;
-    uint8_t     code;
-    uint16_t    checksum;
-    uint16_t    identifier;
-    uint16_t    sequenceNumber;
+    uint8_t type;
+    uint8_t code;
+    uint16_t checksum;
+    uint16_t identifier;
+    uint16_t sequenceNumber;
     // data...
 };
 typedef struct ICMPHeader ICMPHeader;

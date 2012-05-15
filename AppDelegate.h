@@ -15,27 +15,27 @@
 
 @interface AppDelegate : NSObject<CommandWindowControllerDelegate>
 {
-	
-	SocketController*	listenSocket;
-	MIDIController*		midiController;
-@private
-	CommandWindowController* cmdWindowController;
-	/*	
-	 @private
-	 NSManagedObjectContext *managedObjectContext_;
-	 NSManagedObjectModel *managedObjectModel_;
-	 NSPersistentStoreCoordinator *persistentStoreCoordinator_;
-	 */
+
+    SocketController *       listenSocket;
+    MIDIController *         midiController;
+    @private
+    CommandWindowController * cmdWindowController;
+    /*
+       @private
+       NSManagedObjectContext *managedObjectContext_;
+       NSManagedObjectModel *managedObjectModel_;
+       NSPersistentStoreCoordinator *persistentStoreCoordinator_;
+     */
 }
 
-@property (readonly) SocketController*	listenSocket;
+@property (readonly) SocketController *  listenSocket;
 
 /*
- @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
- @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
- @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
- 
- - (NSString *)applicationDocumentsDirectory;
+   @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+   @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+   @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+   - (NSString *)applicationDocumentsDirectory;
  */
 - (IBAction) openSettings:(id)sender;
 - (void)handleStartScriptCommandSent:(NSNotification *)note;

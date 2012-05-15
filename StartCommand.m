@@ -16,9 +16,12 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 #endif
 
 @implementation StartCommand
-- (id)performDefaultImplementation {
+- (id)performDefaultImplementation
+{
     DDLogVerbose(@"StartCommand performDefaultImplementation");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"startScriptCommandSent" object:nil userInfo:nil];
-	return [NSNumber numberWithInt:1];
+    return [NSNumber numberWithInt:1];
 }
+
+
 @end

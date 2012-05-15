@@ -10,17 +10,17 @@
 
 
 @interface SettingsModel : NSObject {
-	id port;
-	id interval;
-	id fullscreen;
-	id pl1Note;
-	id pl2Note;
-	id pl3Note;
+    id port;
+    id interval;
+    id fullscreen;
+    id pl1Note;
+    id pl2Note;
+    id pl3Note;
 }
 
-@property(nonatomic, strong) id  interval;
-@property(nonatomic, strong) id pl1Note, pl2Note, pl3Note;
-@property(nonatomic, strong) id fullscreen;
-@property(nonatomic, strong) id port;
+@property (nonatomic, strong) id interval;
+@property (nonatomic, strong) id pl1Note, pl2Note, pl3Note;
+@property (nonatomic, strong) id fullscreen;
+@property (nonatomic, strong) id port;
 
 @end

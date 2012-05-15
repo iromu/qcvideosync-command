@@ -15,7 +15,7 @@
 {
     SimplePing *    _pinger;
     NSTimer *       _sendTimer;
-    BOOL            _done;
+    BOOL _done;
 }
 
 @property (nonatomic, strong, readwrite) SimplePing *   pinger;
