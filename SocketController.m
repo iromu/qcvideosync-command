@@ -26,9 +26,9 @@
 
 // Log levels: off, error, warn, info, verbose
 #ifdef DEBUG
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
-#else
 static const int ddLogLevel = LOG_LEVEL_INFO;
+#else
+static const int ddLogLevel = LOG_LEVEL_WARN;
 #endif
 
 @interface SocketController (PrivateAPI)
@@ -281,6 +281,8 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
 
     NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
     [sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
+    
+    DDLogVerbose(@"Ping %@",tick);
 }
 
 

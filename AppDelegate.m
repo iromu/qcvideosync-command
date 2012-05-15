@@ -85,14 +85,14 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 - (void)mainThread_handleStartScriptCommandSent:(NSNotification *)note
 {
     DDLogVerbose(@"mainThread_handleStartScriptCommandSent selector");
-    // [self preVisualization: kPreTime];
+    [cmdWindowController sendStartCommand:self];
 }
 
 
 - (IBAction)openSettings:(id)sender
 {
     DDLogVerbose(@"Entering 'AppDelegate.openSettings'.");
-    [cmdWindowController openSettings:self];
+    [cmdWindowController sendStartCommand:self];
 }
 
 
