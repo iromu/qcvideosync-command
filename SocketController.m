@@ -13,6 +13,17 @@
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 
+#define WELCOME_MSG 0
+#define ECHO_MSG    1
+#define WARNING_MSG 2
+#define TICK_MSG    3
+#define CMD_MSG     4
+
+
+#define NO_TIMEOUT -1
+#define READ_TIMEOUT 15.0
+#define READ_TIMEOUT_EXTENSION 10.0
+
 // Log levels: off, error, warn, info, verbose
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -35,17 +46,11 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 -(id) initWithDelegate: (id<SocketControllerDelegate>) delegate {
 	self = [super init];
 	[self setTheDelegate: delegate];
-    
-    
-    
-    
-    pingController = [[SimplePingController alloc]init];
+ 
+    //pingController = [[SimplePingController alloc]init];
 	DDLogVerbose (@"SocketController.initWithDelegate :: Creating Server socket.");
 	serverSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-	
-	//[serverSocket setRunLoopModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
-	
-	
+
 	connectedSockets = [[NSMutableArray alloc] initWithCapacity:1];
 	running = NO;
 	
@@ -62,9 +67,6 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 	int i;
 	for(i = 0; i < [connectedSockets count]; i++)
 	{
-		// Call disconnect on the socket,
-		// which will invoke the onSocketDidDisconnect: method,
-		// which will remove the socket from the list.
 		[[connectedSockets objectAtIndex:i] disconnect];
 	}
 	running = NO;
@@ -80,20 +82,17 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 - (void)broadcastCommand:(NSString *) cmd {
 	
 	if ([connectedSockets count]>0) {
-		//double CurrentTime = [[NSDate date] timeIntervalSince1970];
-		//NSString *msg = [NSString stringWithFormat:@"CMD %@ %f\r\n", cmd,CurrentTime];
 		NSString *msg = [NSString stringWithFormat:@"CMD %@\r\n", cmd];
 		NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
 		for (GCDAsyncSocket *sock in connectedSockets) {
-			[sock writeData:msgData withTimeout:NO_TIMEOUT tag:ECHO_MSG];
+			[sock writeData:msgData withTimeout:NO_TIMEOUT tag:CMD_MSG];
 		}
 	}
 }
 
 
 - (void)ping
-{
-	
+{	
 	if ([connectedSockets count]>0) {
 		for (GCDAsyncSocket *sock in connectedSockets) {
 			[self ping: sock];
@@ -103,9 +102,6 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 
 - (BOOL) acceptOnPortString:(NSString *)str
 {
-	// AsyncSocket requires a run-loop.
-	//NSAssert ([[NSRunLoop currentRunLoop] currentMode] != nil, @"Run loop is not running");
-	
 	UInt16 port = [str intValue];
 	
 	NSError *err = nil;
@@ -125,12 +121,8 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 	}
 	else
 	{
-		// If you get a generic CFSocket error, you probably tried to use a port
-		// number reserved by the operating system.
-		
 		DDLogError (@"Cannot accept connections on port %u. Error domain %@ code %ld (%@). Exiting.", port, [err domain], [err code], [err localizedDescription]);
 		return NO;
-		//exit(1);
 	}
 }
 
@@ -143,10 +135,6 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 
 - (void)netService:(NSNetService *)ns didNotPublish:(NSDictionary *)errorDict
 {
-	// Override me to do something here...
-	// 
-	// Note: This method in invoked on our bonjour thread.
-	
 	DDLogVerbose(@"Failed to Publish Service: domain(%@) type(%@) name(%@) - %@",
                  [ns domain], [ns type], [ns name], errorDict);
 }
@@ -161,7 +149,7 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 		[theDelegate updateConnectedSockets: [connectedSockets count]];	
     
     DDLogInfo(@"Accepted client %@", peer);
-	NSString * welcomeMsg=nil;//= @"Welcome to the Video Server\r\n";
+	NSString * welcomeMsg=nil;
 	if ([theDelegate respondsToSelector:@selector(didAcceptNewPeer:)])
 		welcomeMsg = [theDelegate didAcceptNewPeer: peer];	
 	
@@ -171,15 +159,10 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
 		[newSocket writeData:welcomeData withTimeout:NO_TIMEOUT tag:WELCOME_MSG];
 	}
     
-    
-	
 	[newSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];	
     
     [self ping: newSocket];
 }
-
-
-
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag;
 {
 	if(tag == TICK_MSG)
@@ -207,50 +190,18 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
 }
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag;
 {
-	//DDLogVerbose(@"Entering 'onSocket.didReadData'.");
     uint64_t stop = mach_absolute_time();
-	//NSData *strData = [data subdataWithRange:NSMakeRange(0, [data length] - 2)];
-    //	NSString *msg = [[[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding] autorelease];
 	NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
-	
-    if(str)
-    {
-        //[self logMessage:msg];
-        //DDLogVerbose(@"%@ from %@", str,sock);
-        if([str hasPrefix: @"Tick "])
-        //if(tag == TICK_MSG)
-        {
-            
-         
-            
-            //uint64_t CurrentTime =  mach_absolute_time();
-            //Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &CurrentTime );
-            //NSString *command = [NSString stringWithFormat:@"PL %hu NEXT %hu CT %llu",currentPL,nextIndex-1, * (uint64_t *)&elapsedNano];
-            
-            //double CurrentTime = [[NSDate date] timeIntervalSince1970];
-            //double lag = (CurrentTime - [[str substringFromIndex:5] doubleValue] ) * 1000.00;
+    if(str) {
+        if([str hasPrefix: @"Tick "])  {
             NSString* startS = [str substringFromIndex:5];
-            //NSNumberFormatter * myNumFormatter = [[NSNumberFormatter alloc] init];
-            //NSNumber* startN=[myNumFormatter numberFromString:startS];
-            
             uint64_t start = strtoull([startS UTF8String], NULL, 0);
-               double lag = subtractTimes(stop,start) * 1000.0;
-           // uint64_t delta = (* (uint64_t *)&elapsedNano) - ullvalue;
-           // double lag = (double)(delta/1000000.0);
-            
+            double lag = subtractTimes(stop,start) * 1000.0;
             
             NSString* peer = [self getPeerName:sock];
-            //DDLogVerbose(@"lag: %f ms from %@", lag, peer);
             if ([theDelegate respondsToSelector:@selector(updatePeer:withLag:)])
                 [theDelegate updatePeer: peer withLag: lag];
-            
-            // double CurrentTime = [[NSDate date] timeIntervalSince1970];
-            // NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
-            //NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
-            //[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
-            //[sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:NO_TIMEOUT tag:0];
-            // [self ping:sock];
         }
         else {
             DDLogError(@"Unknow response from peer");
@@ -259,12 +210,7 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
     else
     {
         DDLogError(@"Error converting received data into UTF-8 String");
-        
     }
-	
-	// Even if we were unable to write the incoming data to the log,
-	// we're still going to echo it back to the client.
-	//[sock writeData:data withTimeout:NO_TIMEOUT tag:ECHO_MSG];
 }
 
 - (NSTimeInterval)socket:(GCDAsyncSocket *)sock shouldTimeoutReadWithTag:(long)tag
@@ -290,8 +236,6 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
 	DDLogVerbose(@"Entering 'onSocket.willDisconnectWithError'.");
 	if ([theDelegate respondsToSelector:@selector(onSocketwillDisconnectWithError:port:)])
 		[theDelegate onSocketwillDisconnectWithError: [sock connectedHost] port: [sock connectedPort]];
-	//[self logInfo:FORMAT(@"Client Disconnected: %@:%hu", [sock connectedHost], [sock connectedPort])];
-	
 }
 
 - (void)socketDidCloseReadStream:(GCDAsyncSocket *)sock
@@ -311,9 +255,6 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
 	
 	if ([theDelegate respondsToSelector:@selector(updateConnectedSockets:)])
 		[theDelegate updateConnectedSockets: [connectedSockets count]];
-	
-    
-	//[connCounter setStringValue: FORMAT(@"%hu", [connectedSockets count])];
 }
 
 #pragma mark -
@@ -321,14 +262,9 @@ double subtractTimes( uint64_t endTime, uint64_t startTime )
 #pragma mark PrivateAPI
 -(void) ping: (GCDAsyncSocket* )sock
 {
-    //double CurrentTime = [[NSDate date] timeIntervalSince1970];
-    //NSString *tick = FORMAT(@"Tick %f\r\n", CurrentTime);
-    
-    //uint64_t CurrentTime =  mach_absolute_time();
-    //Nanoseconds elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &CurrentTime );
     uint64_t start = mach_absolute_time();
-    NSString *tick = FORMAT(@"Tick %llu\r\n",start);// * (uint64_t *)&elapsedNano);
-
+    NSString *tick = FORMAT(@"Tick %llu\r\n",start);
+    
     
     NSData *tickData = [tick dataUsingEncoding:NSUTF8StringEncoding];
 	[sock writeData:tickData withTimeout:NO_TIMEOUT tag:TICK_MSG];
