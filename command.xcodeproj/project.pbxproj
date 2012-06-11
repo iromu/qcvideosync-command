@@ -31,7 +31,7 @@
 		D9863B5615341B920043C141 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B4F15341B920043C141 /* DDLog.m */; };
 		D9863B5715341B920043C141 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B5115341B920043C141 /* DDTTYLogger.m */; };
 		D9863B5815341B920043C141 /* Extensions in Resources */ = {isa = PBXBuildFile; fileRef = D9863B5215341B920043C141 /* Extensions */; };
-		D9A5B23C152F7583005BC265 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A5B239152F7583005BC265 /* GCDAsyncSocket.m */; };
+		D98F83C515862F5A00652C03 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */; };
 		D9ABA9F91532129F00A9B5D2 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ABA9F81532129F00A9B5D2 /* SimplePing.m */; };
 		D9ABA9FC153213D300A9B5D2 /* SimplePingController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ABA9FB153213D300A9B5D2 /* SimplePingController.m */; };
 		D9B6674E152F064800B983DE /* StartCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B6674D152F064800B983DE /* StartCommand.m */; };
@@ -111,8 +111,8 @@
 		D9863B5015341B920043C141 /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDTTYLogger.h; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/DDTTYLogger.h; sourceTree = "<absolute>"; };
 		D9863B5115341B920043C141 /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDTTYLogger.m; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/DDTTYLogger.m; sourceTree = "<absolute>"; };
 		D9863B5215341B920043C141 /* Extensions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Extensions; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/Extensions; sourceTree = "<absolute>"; };
-		D9A5B238152F7583005BC265 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = ../../../../../Shared/Source/CocoaAsyncSocket/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
-		D9A5B239152F7583005BC265 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = ../../../../../Shared/Source/CocoaAsyncSocket/GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
+		D98F83C315862F5A00652C03 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.h; sourceTree = SOURCE_ROOT; };
+		D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.m; sourceTree = SOURCE_ROOT; };
 		D9ABA9F71532129F00A9B5D2 /* SimplePing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
 		D9ABA9F81532129F00A9B5D2 /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		D9ABA9FA153213D300A9B5D2 /* SimplePingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePingController.h; sourceTree = "<group>"; };
@@ -278,11 +278,11 @@
 		D9A5B23F152F758C005BC265 /* TCP */ = {
 			isa = PBXGroup;
 			children = (
-				D9A5B238152F7583005BC265 /* GCDAsyncSocket.h */,
-				D9A5B239152F7583005BC265 /* GCDAsyncSocket.m */,
+				D98F83C315862F5A00652C03 /* GCDAsyncSocket.h */,
+				D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */,
 			);
 			name = TCP;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -386,7 +386,6 @@
 				B55B0D2C121607B800BFC0CF /* command.xcdatamodel in Sources */,
 				B5A26392121D438800EC07F8 /* SettingsModel.m in Sources */,
 				D9B6674E152F064800B983DE /* StartCommand.m in Sources */,
-				D9A5B23C152F7583005BC265 /* GCDAsyncSocket.m in Sources */,
 				D9ABA9F91532129F00A9B5D2 /* SimplePing.m in Sources */,
 				D9ABA9FC153213D300A9B5D2 /* SimplePingController.m in Sources */,
 				D9863B5315341B920043C141 /* DDAbstractDatabaseLogger.m in Sources */,
@@ -394,6 +393,7 @@
 				D9863B5515341B920043C141 /* DDFileLogger.m in Sources */,
 				D9863B5615341B920043C141 /* DDLog.m in Sources */,
 				D9863B5715341B920043C141 /* DDTTYLogger.m in Sources */,
+				D98F83C515862F5A00652C03 /* GCDAsyncSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
