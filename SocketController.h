@@ -7,7 +7,7 @@
 //
 
 #include <common.h>
-#import "GCDAsyncSocket.h"
+#import "CocoaAsyncSocket/GCD/GCDAsyncSocket.h"
 
 @class SimplePingController;
 

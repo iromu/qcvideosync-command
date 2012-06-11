@@ -23,6 +23,7 @@
 		B5E9626912267541002A7EDB /* paly_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626712267541002A7EDB /* paly_32.png */; };
 		B5E9626A12267541002A7EDB /* stop_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E9626812267541002A7EDB /* stop_32.png */; };
 		D916731F156166A6007A5632 /* PYMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D97EEEEA15334AEB006F2DF8 /* PYMIDI.framework */; };
+		D9402F84158636A60044A601 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D9402F83158636A60044A601 /* GCDAsyncSocket.m */; };
 		D9417A7A15334B8C0093EE15 /* PYMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D97EEEEA15334AEB006F2DF8 /* PYMIDI.framework */; };
 		D95B82AB1531DC6B00D9C0E1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95B82AA1531DC6B00D9C0E1 /* Security.framework */; };
 		D9863B5315341B920043C141 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B4915341B920043C141 /* DDAbstractDatabaseLogger.m */; };
@@ -31,9 +32,7 @@
 		D9863B5615341B920043C141 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B4F15341B920043C141 /* DDLog.m */; };
 		D9863B5715341B920043C141 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = D9863B5115341B920043C141 /* DDTTYLogger.m */; };
 		D9863B5815341B920043C141 /* Extensions in Resources */ = {isa = PBXBuildFile; fileRef = D9863B5215341B920043C141 /* Extensions */; };
-		D98F83C515862F5A00652C03 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */; };
 		D9ABA9F91532129F00A9B5D2 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ABA9F81532129F00A9B5D2 /* SimplePing.m */; };
-		D9ABA9FC153213D300A9B5D2 /* SimplePingController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ABA9FB153213D300A9B5D2 /* SimplePingController.m */; };
 		D9B6674E152F064800B983DE /* StartCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B6674D152F064800B983DE /* StartCommand.m */; };
 		D9B66751152F071400B983DE /* command.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D9B66750152F071400B983DE /* command.sdef */; };
 /* End PBXBuildFile section */
@@ -98,6 +97,8 @@
 		B5E9626712267541002A7EDB /* paly_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paly_32.png; sourceTree = "<group>"; };
 		B5E9626812267541002A7EDB /* stop_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop_32.png; sourceTree = "<group>"; };
 		B5EDC136122BBB6E00C784AC /* CommandWindowControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandWindowControllerDelegate.h; sourceTree = "<group>"; };
+		D9402F82158636A60044A601 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
+		D9402F83158636A60044A601 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		D95B82AA1531DC6B00D9C0E1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D97EEEE415334AEA006F2DF8 /* PYMIDI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PYMIDI.xcodeproj; path = ../../../../../Shared/Source/github/iromu/pymidi/xcode/PYMIDI.xcodeproj; sourceTree = "<group>"; };
 		D9863B4815341B920043C141 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDAbstractDatabaseLogger.h; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/DDAbstractDatabaseLogger.h; sourceTree = "<absolute>"; };
@@ -111,12 +112,8 @@
 		D9863B5015341B920043C141 /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDTTYLogger.h; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/DDTTYLogger.h; sourceTree = "<absolute>"; };
 		D9863B5115341B920043C141 /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDTTYLogger.m; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/DDTTYLogger.m; sourceTree = "<absolute>"; };
 		D9863B5215341B920043C141 /* Extensions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Extensions; path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command/../../../../../Shared/Source/github/robbiehanson/CocoaLumberjack/LumberJack/Extensions; sourceTree = "<absolute>"; };
-		D98F83C315862F5A00652C03 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.h; sourceTree = SOURCE_ROOT; };
-		D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = CocoaAsyncSocket/GCD/GCDAsyncSocket.m; sourceTree = SOURCE_ROOT; };
 		D9ABA9F71532129F00A9B5D2 /* SimplePing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
 		D9ABA9F81532129F00A9B5D2 /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
-		D9ABA9FA153213D300A9B5D2 /* SimplePingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePingController.h; sourceTree = "<group>"; };
-		D9ABA9FB153213D300A9B5D2 /* SimplePingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePingController.m; sourceTree = "<group>"; };
 		D9B6674C152F064800B983DE /* StartCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartCommand.h; sourceTree = "<group>"; };
 		D9B6674D152F064800B983DE /* StartCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartCommand.m; sourceTree = "<group>"; };
 		D9B66750152F071400B983DE /* command.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = command.sdef; sourceTree = "<group>"; };
@@ -139,6 +136,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D9402F82158636A60044A601 /* GCDAsyncSocket.h */,
+				D9402F83158636A60044A601 /* GCDAsyncSocket.m */,
 				B55686EE120887D00004E0C8 /* CommandWindowController.h */,
 				B55686EF120887D00004E0C8 /* CommandWindowController.m */,
 				B556871512088CA00004E0C8 /* AppDelegate.h */,
@@ -153,8 +152,6 @@
 				D9B6674D152F064800B983DE /* StartCommand.m */,
 				D9ABA9F71532129F00A9B5D2 /* SimplePing.h */,
 				D9ABA9F81532129F00A9B5D2 /* SimplePing.m */,
-				D9ABA9FA153213D300A9B5D2 /* SimplePingController.h */,
-				D9ABA9FB153213D300A9B5D2 /* SimplePingController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -192,7 +189,6 @@
 			children = (
 				D9863B5915341B9A0043C141 /* Logging */,
 				D97EEEE415334AEA006F2DF8 /* PYMIDI.xcodeproj */,
-				D9A5B23F152F758C005BC265 /* TCP */,
 				B5EDC135122BBB4300C784AC /* Protocols */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -274,15 +270,6 @@
 			name = Logging;
 			path = /Users/wantez/Dropbox/Proyectos/QCvideoSync/command;
 			sourceTree = "<absolute>";
-		};
-		D9A5B23F152F758C005BC265 /* TCP */ = {
-			isa = PBXGroup;
-			children = (
-				D98F83C315862F5A00652C03 /* GCDAsyncSocket.h */,
-				D98F83C415862F5A00652C03 /* GCDAsyncSocket.m */,
-			);
-			name = TCP;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -387,13 +374,12 @@
 				B5A26392121D438800EC07F8 /* SettingsModel.m in Sources */,
 				D9B6674E152F064800B983DE /* StartCommand.m in Sources */,
 				D9ABA9F91532129F00A9B5D2 /* SimplePing.m in Sources */,
-				D9ABA9FC153213D300A9B5D2 /* SimplePingController.m in Sources */,
 				D9863B5315341B920043C141 /* DDAbstractDatabaseLogger.m in Sources */,
 				D9863B5415341B920043C141 /* DDASLLogger.m in Sources */,
 				D9863B5515341B920043C141 /* DDFileLogger.m in Sources */,
 				D9863B5615341B920043C141 /* DDLog.m in Sources */,
 				D9863B5715341B920043C141 /* DDTTYLogger.m in Sources */,
-				D98F83C515862F5A00652C03 /* GCDAsyncSocket.m in Sources */,
+				D9402F84158636A60044A601 /* GCDAsyncSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
